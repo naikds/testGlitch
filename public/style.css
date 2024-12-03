@@ -1,25 +1,160 @@
-/* a minimalist set of CSS resets */
-
-/* default to border-box */
-html {
-  box-sizing: border-box;
-  font-size: 16px;
+html,body{
+    height: 100%;
+    margin: 0;
+}
+.container {
+    position: relative;
+    width: 100vw;
+    height: calc(100vw * 1.77);
+}
+.card{
+    z-index: 10;
+}
+.backImg{
+    position: absolute;
+    width: 100%;
+    -webkit-touch-callout:none;
+}
+.draggable {
+    position: absolute;
+    cursor: move;
+    -webkit-touch-callout:none;
 }
 
-*, *:before, *:after {
-  box-sizing: inherit;
+.dropzone {
+    z-index: 1;
 }
 
-/* adjust typography defaults */
-body {
-  margin: 1rem;
-  font-family: sans-serif;
-  line-height: 1.5;
+.bench{
+    position: absolute;
+    width: 83%;
+    height: 10%;
+    top: 62%;
+    left: 4%;
+    display:flex;
+
 }
 
-/* images and videos max out at full width */
-img,
-video {
-  height: auto;
-  max-width: 100%;
+.cardcontainer{
+    position:relative;
+    width: 18%;
+    height: 100%;
+    border: 1px solid;
+    margin-right: 2%;
+}
+
+.hand{
+    position: absolute;
+    width: 85%;
+    height: 10%;
+    top: 74%;
+    left: 2%;
+    border: 1px solid;
+}
+
+.free{
+    position: absolute;
+    width: 26%;
+    height: 15%;
+    top: 30%;
+    left: 1%;
+}
+
+.deck{
+    position: absolute;
+    width: 7%;
+    height: 9%;
+    top:47%;
+    left: 91%;
+}
+
+.deck .card{
+    visibility:hidden;
+}
+
+.trash{
+    position: absolute;
+    width: 8%;
+    height: 9%;
+    top:57%;
+    left: 91%;
+}
+
+.trash .card{
+    visibility:hidden;
+}
+
+.menu{
+    display: none;
+    position: absolute;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.menu ul{
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.menu ul li{
+    padding: 8px 12px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal-content img{
+    position: static;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.selectable {
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+.selected {
+    border: 2px solid blue;
+}
+
+#loading{
+  position: absolute;
+  min-width:100vw;
+  min-height:100vh;
+  display:none;
+  font-weight:bold;
+  z-index:1000;
+  color:red;
+  background-color: rgba(0,0,0,0.5);
 }

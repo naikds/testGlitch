@@ -1,29 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="https://glitch.com/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ポケカ</title>
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <script src="Photon/photon.min.js"></script>
+</head>
+<body>
+  <div id="dataTag" data-pokeind="1" data-eneind="10"></div>
+  <div id="loading">処理中...</div>
+    <div class="container" id="container">
+        <img src="https://cdn.glitch.global/7acda6dd-045c-4170-b78c-4fa2607ce28c/bac_img.jpg?v=1733049926326" alt="backImg" class="backImg"/>
+        <!-- 追加の画像を必要に応じてここに追加 -->
+         <div class="bench" id="bench">
+            <div class="dropzone cardcontainer arrange" id="bench1"></div>
+            <div class="dropzone cardcontainer arrange" id="bench2"></div>
+            <div class="dropzone cardcontainer arrange" id="bench3"></div>
+            <div class="dropzone cardcontainer arrange" id="bench4"></div>
+            <div class="dropzone cardcontainer arrange" id="bench5"></div>
+        </div>
+        <div class="dropzone hand arrange" id="hand"></div>
+        <div class="dropzone free arrange" id="free"></div>
+        <div class="dropzone deck menuBtn" data-menu="deck_menu" id="deck">
+          <img alt="card" class="draggable card selectable" id="card1"/>
+          <img alt="card" class="draggable card selectable" id="card2"/>
+          <img alt="card" class="draggable card selectable" id="card3"/>
+          <img alt="card" class="draggable card selectable" id="card4"/>
+          <img alt="card" class="draggable card selectable" id="card5"/>
+          <img alt="card" class="draggable card selectable" id="card6"/>
+          <img alt="card" class="draggable card selectable" id="card7"/>
+          <img alt="card" class="draggable card selectable" id="card8"/>
+          <img alt="card" class="draggable card selectable" id="card9"/>
+          <img alt="card" class="draggable card selectable" id="card10"/>
+          <img alt="card" class="draggable card selectable" id="card11"/>
+          <img alt="card" class="draggable card selectable" id="card12"/>
+          <img alt="card" class="draggable card selectable" id="card13"/>
+          <img alt="card" class="draggable card selectable" id="card14"/>
+          <img alt="card" class="draggable card selectable" id="card15"/>
+          <img alt="card" class="draggable card selectable" id="card16"/>
+          <img alt="card" class="draggable card selectable" id="card17"/>
+          <img alt="card" class="draggable card selectable" id="card18"/>
+          <img alt="card" class="draggable card selectable" id="card19"/>
+          <img alt="card" class="draggable card selectable" id="card20"/>
+          <img alt="card" class="draggable card selectable" id="card21"/>
+          <img alt="card" class="draggable card selectable" id="card22"/>
+          <img alt="card" class="draggable card selectable" id="card23"/>
+          <img alt="card" class="draggable card selectable" id="card24"/>
+          <img alt="card" class="draggable card selectable" id="card25"/>
+          <img alt="card" class="draggable card selectable" id="card26"/>
+          <img alt="card" class="draggable card selectable" id="card27"/>
+          <img alt="card" class="draggable card selectable" id="card28"/>
+          <img alt="card" class="draggable card selectable" id="card29"/>
+          <img alt="card" class="draggable card selectable" id="card30"/>
+          <img alt="card" class="draggable card selectable" id="card31"/>
+          <img alt="card" class="draggable card selectable" id="card32"/>
+          <img alt="card" class="draggable card selectable" id="card33"/>
+          <img alt="card" class="draggable card selectable" id="card34"/>
+          <img alt="card" class="draggable card selectable" id="card35"/>
+          <img alt="card" class="draggable card selectable" id="card36"/>
+          <img alt="card" class="draggable card selectable" id="card37"/>
+          <img alt="card" class="draggable card selectable" id="card38"/>
+          <img alt="card" class="draggable card selectable" id="card39"/>
+          <img alt="card" class="draggable card selectable" id="card40"/>
+          <img alt="card" class="draggable card selectable" id="card41"/>
+          <img alt="card" class="draggable card selectable" id="card42"/>
+          <img alt="card" class="draggable card selectable" id="card43"/>
+          <img alt="card" class="draggable card selectable" id="card44"/>
+          <img alt="card" class="draggable card selectable" id="card45"/>
+          <img alt="card" class="draggable card selectable" id="card46"/>
+          <img alt="card" class="draggable card selectable" id="card47"/>
+          <img alt="card" class="draggable card selectable" id="card48"/>
+          <img alt="card" class="draggable card selectable" id="card49"/>
+          <img alt="card" class="draggable card selectable" id="card50"/>
+          <img alt="card" class="draggable card selectable" id="card51"/>
+          <img alt="card" class="draggable card selectable" id="card52"/>
+          <img alt="card" class="draggable card selectable" id="card53"/>
+          <img alt="card" class="draggable card selectable" id="card54"/>
+          <img alt="card" class="draggable card selectable" id="card55"/>
+          <img alt="card" class="draggable card selectable" id="card56"/>
+          <img alt="card" class="draggable card selectable" id="card57"/>
+          <img alt="card" class="draggable card selectable" id="card58"/>
+          <img alt="card" class="draggable card selectable" id="card59"/>
+          <img alt="card" class="draggable card selectable" id="card60"/>
+        </div>
+        <div class="menu" id="deck_menu">
+            <ul>
+                <li class="menu-item" data-action="draw">1枚引く</li>
+                <li class="menu-item" data-action="deck_shufl">シャッフルする</li>
+                <li class="menu-item" data-action="deck_show">中身を見る</li>
+            </ul>
+        </div>
+        <div class="dropzone trash menuBtn" data-menu="trash_menu" id="trash"></div>
+        <div class="menu" id="trash_menu">
+            <ul>
+                <li class="menu-item" data-action="trash_show">中身を見る</li>
+            </ul>
+        </div>
+    </div>
+    <form id="scrapeForm">
+      <input type="text" id="urlInput" name="url" placeholder="デッキコードを入力">
+      <button type="submit">送信</button>
+    </form>
+    <div id="photonForm">
+      <input type="text" id="roomInput" name="roomNo" placeholder="ルーム番号を入力">
+      <button id="photonButton">送信</button>
+      <span id="photonResult"></span>
+    </div>
+  <div id="result"></div>
+    <script src="index.js"></script>
 
-    <title>Hello Node!</title>
-
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />   
-  </head>
-  <body>
-    
-    <!-- this is the start of content -->
-    <h1>
-      {{ greeting }}
-    </h1>
-    <p>
-      This starter gives you everything you need to start working on a new
-      project using Node. If you're looking for something a little more 
-      opinionated, try remixing
-      <a href="https://glitch.com/edit/#!/remix/glitch-hello-node"
-        >~glitch-hello-node</a
-      >.
-    </p>
-        
-  </body>
+    <!-- モーダル1 -->
+<div id="modal" class="modal" data-src="">
+    <div class="modal-content">
+        <span class="close" data-modal="modal">×</span>
+        <button class="move"  data-target=".hand">手札</button>
+        <button class="move"  data-target=".trash">トラッシュ</button>
+        <button class="move"  data-target=".deck">山札</button>
+        <button class="move"  data-target=".free">フリー</button>
+        <div class="image-container">
+        </div>
+    </div>
+</div>
+</body>
 </html>
