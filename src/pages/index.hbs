@@ -1,126 +1,187 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ポケカ</title>
-  <link rel="stylesheet" href="style.css" type="text/css">
-  <script src="Photon/photon.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケカ</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="Photon/photon.min.js"></script>
 </head>
+
 <body>
-  <div id="dataTag" data-pokeind="1" data-eneind="10"></div>
-  <div id="loading">処理中...</div>
+    <div id="dataTag" data-pokeind="1" data-eneind="10"></div>
+    <div id="loading">処理中...</div>
     <div class="container" id="container">
-        <img src="https://cdn.glitch.global/7acda6dd-045c-4170-b78c-4fa2607ce28c/bac_img.jpg?v=1733049926326" alt="backImg" class="backImg"/>
+        <img src="https://cdn.glitch.global/7acda6dd-045c-4170-b78c-4fa2607ce28c/back_image.jpg?v=1733319458139"
+            alt="backImg" class="backImg" />
         <!-- 追加の画像を必要に応じてここに追加 -->
-         <div class="bench" id="bench">
-            <div class="dropzone cardcontainer arrange" id="bench1"></div>
-            <div class="dropzone cardcontainer arrange" id="bench2"></div>
-            <div class="dropzone cardcontainer arrange" id="bench3"></div>
-            <div class="dropzone cardcontainer arrange" id="bench4"></div>
-            <div class="dropzone cardcontainer arrange" id="bench5"></div>
+        <div class="coin" id="coin">
+          表
         </div>
-        <div class="dropzone hand arrange" id="hand"></div>
-        <div class="dropzone free arrange" id="free"></div>
-        <div class="dropzone deck menuBtn" data-menu="deck_menu" id="deck">
-          <img alt="card" class="draggable card selectable" id="card1"/>
-          <img alt="card" class="draggable card selectable" id="card2"/>
-          <img alt="card" class="draggable card selectable" id="card3"/>
-          <img alt="card" class="draggable card selectable" id="card4"/>
-          <img alt="card" class="draggable card selectable" id="card5"/>
-          <img alt="card" class="draggable card selectable" id="card6"/>
-          <img alt="card" class="draggable card selectable" id="card7"/>
-          <img alt="card" class="draggable card selectable" id="card8"/>
-          <img alt="card" class="draggable card selectable" id="card9"/>
-          <img alt="card" class="draggable card selectable" id="card10"/>
-          <img alt="card" class="draggable card selectable" id="card11"/>
-          <img alt="card" class="draggable card selectable" id="card12"/>
-          <img alt="card" class="draggable card selectable" id="card13"/>
-          <img alt="card" class="draggable card selectable" id="card14"/>
-          <img alt="card" class="draggable card selectable" id="card15"/>
-          <img alt="card" class="draggable card selectable" id="card16"/>
-          <img alt="card" class="draggable card selectable" id="card17"/>
-          <img alt="card" class="draggable card selectable" id="card18"/>
-          <img alt="card" class="draggable card selectable" id="card19"/>
-          <img alt="card" class="draggable card selectable" id="card20"/>
-          <img alt="card" class="draggable card selectable" id="card21"/>
-          <img alt="card" class="draggable card selectable" id="card22"/>
-          <img alt="card" class="draggable card selectable" id="card23"/>
-          <img alt="card" class="draggable card selectable" id="card24"/>
-          <img alt="card" class="draggable card selectable" id="card25"/>
-          <img alt="card" class="draggable card selectable" id="card26"/>
-          <img alt="card" class="draggable card selectable" id="card27"/>
-          <img alt="card" class="draggable card selectable" id="card28"/>
-          <img alt="card" class="draggable card selectable" id="card29"/>
-          <img alt="card" class="draggable card selectable" id="card30"/>
-          <img alt="card" class="draggable card selectable" id="card31"/>
-          <img alt="card" class="draggable card selectable" id="card32"/>
-          <img alt="card" class="draggable card selectable" id="card33"/>
-          <img alt="card" class="draggable card selectable" id="card34"/>
-          <img alt="card" class="draggable card selectable" id="card35"/>
-          <img alt="card" class="draggable card selectable" id="card36"/>
-          <img alt="card" class="draggable card selectable" id="card37"/>
-          <img alt="card" class="draggable card selectable" id="card38"/>
-          <img alt="card" class="draggable card selectable" id="card39"/>
-          <img alt="card" class="draggable card selectable" id="card40"/>
-          <img alt="card" class="draggable card selectable" id="card41"/>
-          <img alt="card" class="draggable card selectable" id="card42"/>
-          <img alt="card" class="draggable card selectable" id="card43"/>
-          <img alt="card" class="draggable card selectable" id="card44"/>
-          <img alt="card" class="draggable card selectable" id="card45"/>
-          <img alt="card" class="draggable card selectable" id="card46"/>
-          <img alt="card" class="draggable card selectable" id="card47"/>
-          <img alt="card" class="draggable card selectable" id="card48"/>
-          <img alt="card" class="draggable card selectable" id="card49"/>
-          <img alt="card" class="draggable card selectable" id="card50"/>
-          <img alt="card" class="draggable card selectable" id="card51"/>
-          <img alt="card" class="draggable card selectable" id="card52"/>
-          <img alt="card" class="draggable card selectable" id="card53"/>
-          <img alt="card" class="draggable card selectable" id="card54"/>
-          <img alt="card" class="draggable card selectable" id="card55"/>
-          <img alt="card" class="draggable card selectable" id="card56"/>
-          <img alt="card" class="draggable card selectable" id="card57"/>
-          <img alt="card" class="draggable card selectable" id="card58"/>
-          <img alt="card" class="draggable card selectable" id="card59"/>
-          <img alt="card" class="draggable card selectable" id="card60"/>
+        <div class="dropzone battle p2" id="battle"></div>
+        <div class="battle" style="top:20.8%" id="p2_battle"></div>
+        <div class="benchbox" id="bench">
+            <div class="dropzone bench" id="bench1"></div>
+            <div class="dropzone bench" id="bench2"></div>
+            <div class="dropzone bench" id="bench3"></div>
+            <div class="dropzone bench" id="bench4"></div>
+            <div class="dropzone bench" id="bench5"></div>
         </div>
+        <div class="benchbox" style="top:2.8%" id="p2_bench">
+            <div class="bench p2" id="p2_bench1"></div>
+            <div class="bench p2" id="p2_bench2"></div>
+            <div class="bench p2" id="p2_bench3"></div>
+            <div class="bench p2" id="p2_bench4"></div>
+            <div class="bench p2" id="p2_bench5"></div>
+        </div>
+        <div class="dropzone hand" id="hand"></div>
+        <div class="dropzone free" id="free"></div>
+        <div class="free" style="top:20%" id="p2_free"></div>
+        <div class="dropzone stadium" id="stadium"></div>
+        <div class="stadium" style="top:26%" id="p2_stadium"></div>
+        <template id="card">
+            <img alt="card" class="draggable card selectable" />
+        </template>
+        <template id="p2_card">
+            <img alt="card" class="p2_card" />
+        </template>
+        <template id="benchInfo">
+          <div class="benchInfo menuBtn" data-menu="bench_menu">
+          </div>
+          <div class="menu">
+          <ul>
+              <li class="menu-item" data-action="irekae">バトル場と入れ替える</li>
+              <li class="menu-item" data-action="bench_trash">トラッシュ送る</li>
+          </ul>
+        </div>
+        </template>
+        <div class="handInfo menuBtn" data-menu="hand_menu">
+        </div>
+        <div class="menu" id="hand_menu">
+          <ul>
+            <li class="menu-item" data-action="hand_trash">トラッシュ送る</li>
+            <li class="menu-item" data-action="hand_deck">山札の下へ送る</li>
+          </ul>
+        </div>
+        <div class="freeInfo menuBtn" data-menu="free_menu">
+        </div>
+        <div class="menu" id="free_menu">
+          <ul>
+            <li class="menu-item" data-action="free_trash">トラッシュ送る</li>
+          </ul>
+        </div>
+        <div class="battleInfo menuBtn" data-menu="battle_menu">
+        </div>
+        <div class="menu" id="battle_menu">
+          <ul>
+            <li class="menu-item" data-action="battle_trash">トラッシュ送る</li>
+          </ul>
+        </div>
+      <div class="playerinfo">
+        <div id="p1Info"></div>
+        <div id="p2Info"></div>
+      </div>
+      
+        <template id="damageSel">
+          <select class="damageSel">
+            <option val="0">0</option>
+            <option val="10">10</option>
+            <option val="20">20</option>
+            <option val="30">30</option>
+            <option val="40">40</option>
+            <option val="50">50</option>
+            <option val="60">60</option>
+            <option val="70">70</option>
+            <option val="80">80</option>
+            <option val="90">90</option>
+            <option val="100">100</option>
+            <option val="110">110</option>
+            <option val="120">120</option>
+            <option val="130">130</option>
+            <option val="140">140</option>
+            <option val="150">150</option>
+            <option val="160">160</option>
+            <option val="170">170</option>
+            <option val="180">180</option>
+            <option val="190">190</option>
+            <option val="200">200</option>
+            <option val="210">210</option>
+            <option val="220">220</option>
+            <option val="230">230</option>
+            <option val="240">240</option>
+            <option val="250">250</option>
+            <option val="260">260</option>
+            <option val="270">270</option>
+            <option val="280">280</option>
+            <option val="290">290</option>
+            <option val="300">300</option>
+            <option val="310">310</option>
+            <option val="320">320</option>
+            <option val="330">330</option>
+            <option val="340">340</option>
+            <option val="350">350</option>
+            <option val="360">360</option>
+            <option val="370">370</option>
+          </select>
+        </template>
+      <div class="p2_damageSel" style="left:10%" id="p2_damageSel1">0</div>
+      <div class="p2_damageSel" style="left:24%" id="p2_damageSel2">0</div>
+      <div class="p2_damageSel" style="left:40%" id="p2_damageSel3">0</div>
+      <div class="p2_damageSel" style="left:57%" id="p2_damageSel4">0</div>
+      <div class="p2_damageSel" style="left:74%" id="p2_damageSel5">0</div>
+      <div class="p2_damageSel" style="left:41%;top:35%;" id="p2_damageSel_battle">0</div>
+        <div class="dropzone deck menuBtn" data-menu="deck_menu" id="deck"></div>
         <div class="menu" id="deck_menu">
             <ul>
                 <li class="menu-item" data-action="draw">1枚引く</li>
                 <li class="menu-item" data-action="deck_shufl">シャッフルする</li>
                 <li class="menu-item" data-action="deck_show">中身を見る</li>
+                <li class="menu-item" data-action="reset">初期配置にする</li>
             </ul>
         </div>
+        <div class="p2_deck" id="p2_deck"></div>
+      
         <div class="dropzone trash menuBtn" data-menu="trash_menu" id="trash"></div>
         <div class="menu" id="trash_menu">
             <ul>
                 <li class="menu-item" data-action="trash_show">中身を見る</li>
             </ul>
         </div>
-    </div>
-    <form id="scrapeForm">
-      <input type="text" id="urlInput" name="url" placeholder="デッキコードを入力">
-      <button type="submit">送信</button>
-    </form>
-    <div id="photonForm">
-      <input type="text" id="roomInput" name="roomNo" placeholder="ルーム番号を入力">
-      <button id="photonButton">送信</button>
-      <span id="photonResult"></span>
-    </div>
-  <div id="result"></div>
-    <script src="index.js"></script>
-
-    <!-- モーダル1 -->
-<div id="modal" class="modal" data-src="">
-    <div class="modal-content">
-        <span class="close" data-modal="modal">×</span>
-        <button class="move"  data-target=".hand">手札</button>
-        <button class="move"  data-target=".trash">トラッシュ</button>
-        <button class="move"  data-target=".deck">山札</button>
-        <button class="move"  data-target=".free">フリー</button>
-        <div class="image-container">
+        <div class="dropzone side menuBtn" data-menu="side_menu" id="side"></div>
+        <div class="menu" id="side_menu">
+          <ul>
+              <li class="menu-item" data-action="side_draw1">1枚引く</li>
+              <li class="menu-item" data-action="side_draw2">2枚引く</li>
+              <li class="menu-item" data-action="side_show">中身を見る</li>
+          </ul>
         </div>
     </div>
-</div>
+    <form id="scrapeForm">
+        <input type="text" id="urlInput" name="url" placeholder="デッキコードを入力">
+        <button type="submit">送信</button>
+    </form>
+    <div id="photonForm">
+        <input type="text" id="roomInput" name="roomNo" placeholder="ルーム番号を入力">
+        <button id="photonButton">送信</button>
+        <span id="photonResult"></span>
+    </div>
+    <div id="result"></div>
+    <script src="index.js"></script>
+
+
+    <!-- モーダル1 -->
+    <div id="modal" class="modal" data-src="">
+        <div class="modal-content">
+            <span class="close" data-modal="modal">×</span>
+            <button class="move" data-target=".hand">手札</button>
+            <button class="move" data-target=".trash">トラッシュ</button>
+            <button class="move" data-target=".deck">山札</button>
+            <button class="move" data-target=".free">フリー</button>
+            <div class="image-container">
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
