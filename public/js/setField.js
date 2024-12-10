@@ -81,14 +81,5 @@ export function setField(){
     clone.querySelector('.damageSel').style.top = `${38}%`;
     clone.querySelector('.damageSel').style.left = `${38}%`;
     mainCont.appendChild(clone);
-  
-  const testDeck = document.getElementById('testDeck');
-  if(false){
-    deck.innerHTML = '';
-    while(testDeck.firstChild){
-      deck.appendChild(testDeck.firstChild);
-    }
-  }else{
-    testDeck.innerHTML = '';
-  }
+
 }
