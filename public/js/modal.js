@@ -1,5 +1,6 @@
 import {arrangeImages} from './arrange.js';
 import {sendCardInfo} from './photon_src.js';
+import {shufflDeck} from './menuBtn.js';
 
 export function setModal(){
   // モーダルを開く
@@ -16,6 +17,7 @@ export function setModal(){
       const modalId = this.getAttribute('data-modal');
       document.getElementById(modalId).style.display = "none";
       document.getElementById(modalId).querySelector('.image-container').innerHTML = '';
+      shufflDeck();
     });
   });
 
@@ -26,13 +28,13 @@ export function setModal(){
       const currentModal = this.closest('.modal');
       const srcModal = currentModal.getAttribute('data-src');
       const selectedImages = currentModal.querySelectorAll('.selected');
-      const targetArea = document.querySelector(targetModal);
+      const targetArea = document.querySelector('.' + targetModal);
       const srcArea = document.querySelector('#' + srcModal);
       selectedImages.forEach(img => {
         targetArea.appendChild(srcArea.querySelector('#' + img.id));
+        img.style.display = 'none';
+        img.classList.remove('selected');
       });
-      currentModal.style.display = "none";
-      currentModal.querySelector('.image-container').innerHTML = '';
       arrangeImages();
       sendCardInfo();
     });

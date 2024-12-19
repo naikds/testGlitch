@@ -34,7 +34,7 @@ export function setField(){
     const p2_bench = document.getElementById('p2_bench');
     for (let i = 1; i <= 5; i++) {
         const clone = p2_bench.content.cloneNode(true);
-        clone.querySelector('.bench').id = `p2_bench${i}`;
+        clone.querySelector('.p2_bench').id = `p2_bench${i}`;
         clone.querySelector('.p2_b_pke').id = `p2_b_pke${i}`;
         clone.querySelector('.p2_b_too').id = `p2_b_too${i}`;
         clone.querySelector('.p2_b_ene').id = `p2_b_ene${i}`;

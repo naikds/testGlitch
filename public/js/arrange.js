@@ -50,10 +50,12 @@ function arrangeBattleP1(){
         let gdsIndex = 0;
         let eneIndex = 0;
         images.forEach((img, index) => {
+            img.style.top = '';
+            img.style.left = '';
             const gdsoverlap = img.clientWidth * seterCardWidth; // 重なり具合（ピクセル単位）
             const gdsxOffset = gdsoverlap * gdsIndex;
 
-            const eneoverlap = img.clientWidth * seterCardWidth; // 重なり具合（ピクセル単位）
+            const eneoverlap = img.clientWidth * 0.15; // 重なり具合（ピクセル単位）
             const enexOffset = eneoverlap * eneIndex;
             const eneyOffset = img.clientHeight / 2 - img.clientWidth / 2;
 
@@ -78,7 +80,7 @@ function arrangeBattleP1(){
 //p2のバトル場・ベンチの配置を調整
 function arrangeBattleP2(){
     //バトル・ベンチ
-    const cardSeter = document.querySelectorAll('.battle, .bench')
+    const cardSeter = document.querySelectorAll('.p2_battle, .p2_bench')
     const seterCardWidth = 0.3;
 
     cardSeter.forEach(seter => {
@@ -86,6 +88,8 @@ function arrangeBattleP2(){
         let gdsIndex = 0;
         let eneIndex = 0;
         images.forEach((img, index) => {
+            img.style.top = '';
+            img.style.left = '';
             const gdsoverlap = img.clientWidth * seterCardWidth; // 重なり具合（ピクセル単位）
             const gdsxOffset = gdsoverlap * gdsIndex;
 
@@ -115,6 +119,8 @@ function arrangeFree(){
     free.forEach(f => {
         let images = f.querySelectorAll('.card, .p2_card');
         images.forEach((img, index) => {
+            img.style.top = '';
+            img.style.left = '';
             const overlapx = img.clientWidth * 0.6; // 重なり具合（ピクセル単位）
             const overlapy = img.clientHeight * 0.3; // 重なり具合（ピクセル単位）
             const xOffset = overlapx * (index % 3);
@@ -128,22 +134,22 @@ function arrangeFree(){
 //スタジアムの配置を調整
 function arrangeStudium(){
     //スタジアム
-    const stadium = document.getElementById('stadium');
-    let images = stadium.querySelectorAll('.card');
+    const stadium = document.querySelectorAll('.stadium');
+    stadium.forEach(s =>{
+          let images = s.querySelectorAll('.card, .p2_card');
     images.forEach((img, index) => {
+        img.style.top = '';
+        img.style.left = '';
         const staoverlap = img.clientWidth * 0.7; // 重なり具合（ピクセル単位）
         const staxOffset = staoverlap * index;
-
-        switch (img.dataset.tag) {
-            case 'sta':
-                img.style.left = `${staxOffset}px`;
-                break;
-            default:
-                document.getElementById(img.dataset.moto).appendChild(img);
-                arrangeImages();
-                break;
+        if(img.classList.contains('sta')){
+            img.style.left = `${staxOffset}px`;
+        }else{
+            document.getElementById(img.dataset.moto).appendChild(img);
+            arrangeImages();
         }
-    })
+    });
+  });
 }
 
 //変なところにいるカードを元の位置に戻す
