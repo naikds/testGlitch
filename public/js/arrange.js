@@ -55,7 +55,7 @@ function arrangeBattleP1(){
             const gdsoverlap = img.clientWidth * seterCardWidth; // 重なり具合（ピクセル単位）
             const gdsxOffset = gdsoverlap * gdsIndex;
 
-            const eneoverlap = img.clientWidth * 0.15; // 重なり具合（ピクセル単位）
+            const eneoverlap = img.clientWidth * seterCardWidth; // 重なり具合（ピクセル単位）
             const enexOffset = eneoverlap * eneIndex;
             const eneyOffset = img.clientHeight / 2 - img.clientWidth / 2;
 
@@ -151,6 +151,7 @@ function arrangeStudium(){
     });
   });
 }
+
 
 //変なところにいるカードを元の位置に戻す
 function bagReset(){

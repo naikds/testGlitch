@@ -36,14 +36,14 @@ export function setDeckLoad(){
         let cnt = 0;
         images.forEach(img => {
           const imgSrc = img.src;
-          const baseUri = 'https://goldenrod-momentous-poppy.glitch.me';//なぜかゴミがつくのでトリムするよう
+          const baseUri = 'https://pokecawebapp-test.glitch.me';//なぜかゴミがつくのでトリムするよう
           const pokeUrl = 'https://www.pokemon-card.com/';//ゴミの代わりにつけるよう
 
           for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
             deckIndex = deckIndex + 1;
             document.getElementById('card' + deckIndex).src = pokeUrl + imgSrc.replace(baseUri, '');//カードのurl
             document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
-            document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2
+            document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類
           }
           cnt = cnt + 1;
         });
