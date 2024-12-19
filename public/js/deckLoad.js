@@ -43,8 +43,7 @@ export function setDeckLoad(){
             deckIndex = deckIndex + 1;
             document.getElementById('card' + deckIndex).src = pokeUrl + imgSrc.replace(baseUri, '');//カードのurl
             document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
-            document.getElementById('card' + deckIndex).dataset.tag = cardTags[cnt * 2];//カードの種類1
-            document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2→どっちかに統一する
+            document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2
           }
           cnt = cnt + 1;
         });

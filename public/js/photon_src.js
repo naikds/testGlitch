@@ -51,10 +51,17 @@ client.connectToRegionMaster(region);
 //ルーム参加処理
 photonButton.addEventListener('click', function () {
   const roomName = roomInput.value;
-  const carddata = document.getElementById('card1').dataset.tag;
-  if (roomName && carddata) {
+  const carddata = document.getElementById('card1').alt;
+  if((carddata == 'card')){
+    result.innerHTML = 'デッキを読み込んで下さい';
+    return;
+  }
+  if (roomName) {
+    client.connectToRegionMaster(region);
     client.createRoom(roomName, { maxPlayers: 2 });
     client.joinRoom(roomName);
+  }else{
+    result.innerHTML = 'ルーム番号を入力してください';
   }
 });
 
@@ -102,7 +109,8 @@ client.onEvent = function (code, content, actorNr) {
 //最初カードの情報を送信（src込み）
 export function sendFirstCardInfo() {
   const cards = document.querySelectorAll('img.card');
-  const srcList = Array.from(cards).map(img => img.id + "@" + img.src + "@" + img.dataset.tag);
+  
+  const srcList = Array.from(cards).map(img => img.id + "@" + img.src + "@" + getTagName(img));
   sendPhotonMessage(3, srcList.join(','));
 }
 
@@ -113,7 +121,6 @@ function setFirstCardInfo(info) {
     const p2img = document.getElementById('p2_' + datasrc[0])
     const p2pare=document.getElementById('p2_deck');
     p2img.src = datasrc[1];
-    p2img.dataset.tag = datasrc[2];
     p2img.classList.add(datasrc[2]);
     p2pare.appendChild(p2img);
   })
@@ -201,3 +208,13 @@ function getStateName(state) {
     }
     return "Unknown";
   }
+
+function getTagName(card){
+  if(card.classList.contains('pke')){return 'pke';}
+  if(card.classList.contains('too')){return 'too';}
+  if(card.classList.contains('ene')){return 'ene';}
+  if(card.classList.contains('sup')){return 'sup';}
+  if(card.classList.contains('sta')){return 'sta';}
+  if(card.classList.contains('gds')){return 'gds';}
+  return '';
+}
