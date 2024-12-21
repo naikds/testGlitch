@@ -1,5 +1,6 @@
 import {arrangeImages} from './arrange.js';
 import {sendCardInfo} from './photon_src.js';
+import {shufflDeck} from './menuBtn.js';
 
 export function setModal(){
   // モーダルを開く
@@ -16,6 +17,7 @@ export function setModal(){
       const modalId = this.getAttribute('data-modal');
       document.getElementById(modalId).style.display = "none";
       document.getElementById(modalId).querySelector('.image-container').innerHTML = '';
+      shufflDeck();
     });
   });
 

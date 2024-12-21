@@ -119,13 +119,4 @@ export function setField(){
     menu.style.display = 'none';
   });
   
-  const testDeck = document.getElementById('testDeck');
-  if(true){
-    deck.innerHTML = '';
-    while(testDeck.firstChild){
-      deck.appendChild(testDeck.firstChild);
-    }
-  }else{
-    testDeck.innerHTML = '';
-  }
 }

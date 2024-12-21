@@ -134,6 +134,13 @@ function btnAct(item, btnid) {
         //ベンチをトラッシュ
         case 'bench_trash':
             moveAllCard('bench' + btnid.slice(-1), 'trash', false);
+            document.getElementById('damageSel' + btnid.slice(-1)).value = '0';
+            break;
+        //ベンチをデッキに戻す
+        case 'bench_deck':
+            moveAllCard('bench' + btnid.slice(-1), 'deck', false);
+            shufflDeck();
+            document.getElementById('damageSel' + btnid.slice(-1)).value = '0';
             break;
         //手札をトラッシュ
         case 'hand_trash':
@@ -150,6 +157,13 @@ function btnAct(item, btnid) {
         //バトル場をトラッシュ
         case 'battle_trash':
             moveAllCard('battle', 'trash', false);
+            document.getElementById('damageSel_battle').value = '0';
+            break;
+        //バトル場をデッキに戻す
+        case 'battle_deck':
+            moveAllCard('battle', 'deck', false);
+            shufflDeck();
+            document.getElementById('damageSel_battle').value = '0';
             break;
         case 'deck_Xshow':
             //自分のIDを下位メニューに伝える
@@ -174,9 +188,11 @@ function btnAct(item, btnid) {
             break;
     }
     arrangeImages();
+    sendCardInfo();
+    sendDamage();
 }
 
-function shufflDeck(){
+export function shufflDeck(){
     const deck = document.getElementById('deck');
     const items = Array.from(deck.children);
     const shuffledItems = shuffleArray(items);
