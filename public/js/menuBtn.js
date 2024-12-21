@@ -9,16 +9,11 @@ export function setMenuBtn(){
         const contextMenu = document.getElementById(menuBtn.getAttribute('data-menu'));
 
         //メニューの位置を調整
-        contextMenu.style.top = `${menuBtn.offsetTop}px`;
 
         //メニューを表示する
         menuBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             contextMenu.style.display = 'block';
-            contextMenu.style.left = `${menuBtn.offsetLeft - contextMenu.offsetWidth}px`
-            if (contextMenu.offsetLeft < 0) {
-              contextMenu.style.left = `${menuBtn.offsetLeft + menuBtn.offsetWidth}px`
-            }
         });
 
         //メニューで選ばれた項目の色を変える
@@ -111,6 +106,8 @@ function btnAct(item, btnid) {
             moveCard('deck', 'hand', 7, true, false);//手札に7枚追加
 
             damages.forEach(d => { d.value = '0' });//ダメカンをリセット
+            arrangeImages();
+            sendCardInfo();
             break;
         //ポケモン入れ替え
         case 'irekae':
@@ -131,6 +128,8 @@ function btnAct(item, btnid) {
 
             damagebench.value = damagebatleV;
             damagebatle.value = damagebenchV;
+            sendCardInfo();
+            sendDamage();
             break;
         //ベンチをトラッシュ
         case 'bench_trash':
@@ -315,4 +314,17 @@ function updp1Info() {
     const side = document.getElementById('side');
     p1info.textContent = `自　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`;
     sendplayerInfo();
+}
+
+//要素が画面内かどうか調べる
+function isElInViewport(el){
+  const rect = el.getBoundingClientRect();
+  if(rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)){
+    return 1;
+  }
+  if(rect.right >= (window.innerWidth || document.documentElement.clientWidth)){
+    return 2;
+  }
+  
+  return 0;
 }

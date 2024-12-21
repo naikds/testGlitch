@@ -1,4 +1,5 @@
 import {arrangeImages} from './arrange.js';
+import {coinChange} from './other.js';
 
 //Photonサーバ系
 // Photonサーバの設定
@@ -185,16 +186,12 @@ function setplayerInfo(info){
 }
 
 //コイン情報の送信
-export function sendCoin(){
-  const coin = document.getElementById('coin');
-  sendPhotonMessage(13, coin.textContent+','+getComputedStyle(coin).backgroundColor);
+export function sendCoin(coinOU){
+  sendPhotonMessage(13, coinOU);
 }
 
 function setCoin(info){
-  const coinData = info.split(',');
-  const coin = document.getElementById('coin');
-  coin.textContent = coinData[0];
-  coin.style.backgroundColor = coinData[1];
+  coinChange(info);
 }
 
 //Photn用の関数
