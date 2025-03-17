@@ -14,7 +14,7 @@
 <body>
   <div id="loading">処理中...</div>
   <div class="container" id="container">
-    <img src="https://cdn.glitch.global/7acda6dd-045c-4170-b78c-4fa2607ce28c/back_image.jpg?v=1733319458139"
+    <img src="https://cdn.glitch.global/2e2a8bc3-103f-4a29-a6b5-c688c783156d/back_image.png?v=1734787479983"
       alt="backImg" class="backImg" />
     
     <!--コイン-->
@@ -26,7 +26,7 @@
     </div>
     
     <!--バトル場(P1)-->
-    <div class="battle nonMousePointer" id="battle">
+    <div class="battle nonMousePointer cardBox" id="battle">
       <div class="dropzone b_ene" id="b_ene0"></div>
       <div class="dropzone b_too" id="b_too0"></div>
       <div class="dropzone b_pke" id="b_pke0"></div>
@@ -41,7 +41,7 @@
     
     <!--ベンチ(P1)-->
     <template id="bench">
-      <div class="bench nonMousePointer">
+      <div class="bench nonMousePointer cardBox">
         <div class="dropzone b_ene"></div>
         <div class="dropzone b_too"></div>
         <div class="dropzone b_pke"></div>
@@ -60,16 +60,16 @@
     <div class="p2_benchbox" id="p2_benchbox"></div>
     
     <!--手札-->
-    <div class="dropzone hand" id="hand"></div>
+    <div class="dropzone hand cardBox" id="hand"></div>
     
     <!--フリー(P1)-->
-    <div class="dropzone free nonMousePointer" id="free"></div>
+    <div class="dropzone free nonMousePointer cardBox" id="free"></div>
     
     <!--フリー(P2)-->
     <div class="free" style="top:20%" id="p2_free"></div>
     
     <!--sスタジアム(P1)-->
-    <div class="dropzone stadium nonMousePointer" id="stadium"></div>
+    <div class="dropzone stadium nonMousePointer cardBox" id="stadium"></div>
     
     <!--スタジアム(P2)-->
     <div class="stadium" style="top:26%" id="p2_stadium"></div>
@@ -81,7 +81,7 @@
     
     <!--カード（P2テンプレート）-->
     <template id="p2_card">
-      <img alt="card" class="p2_card selectable" />
+      <img alt="card" class="draggable p2_card selectable" />
     </template>
     
     <!--ベンチメニュー-->
@@ -93,6 +93,7 @@
       <ul>
         <li class="menu-item" data-action="irekae">バトル場と入れ替える</li>
         <li class="menu-item" data-action="bench_trash">トラッシュ送る</li>
+        <li class="menu-item" data-action="bench_deck">デッキに戻す(+シャッフル)</li>
       </ul>
     </div>
     
@@ -104,6 +105,7 @@
         <li class="menu-item" data-action="hand_trash">全てトラッシュに送る</li>
         <li class="menu-item" data-action="hand_deck">全て山札の下へ送る</li>
         <li class="menu-item" data-action="hand_show">一覧表示</li>
+        <li class="menu-item" data-action="hand_p2show">相手に手札を見せる</li>
       </ul>
     </div>
     
@@ -141,7 +143,7 @@
     <div class="p2_damageSel" style="left:39%;top:34%;width:12%;height:2%" id="p2_damageSel_battle">0</div>
     
     <!--デッキ + デッキメニュー-->
-    <div class="dropzone deck menuBtn" data-menu="deck_menu" id="deck"></div>
+    <div class="dropzone deck menuBtn cardBox" data-menu="deck_menu" id="deck">Deck</div>
     <div class="menu" id="deck_menu"  data-pr="deck" data-lf="r" data-top="t" data-lfmg="1" data-topmg="1">
       <ul>
         <li class="menu-item" data-action="draw">1枚引く</li>
@@ -151,23 +153,21 @@
         <li class="menu-item" data-action="reset">初期配置にする</li>
       </ul>
     </div>
-    <div class="menu" id="deckXmenu"  data-pr="deck_menu" data-lf="r" data-top="t" data-lfmg="1" data-topmg="1">
+    <div class="menu submenu" id="deckXmenu"  data-pr="deck" data-lf="r" data-top="t" data-lfmg="3.2" data-topmg="1">
       <ul>
-        <li class="menu-item" data-action="Xnum" data-xnum="1">1枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="2">2枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="3">3枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="4">4枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="5">5枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="6">6枚</li>
-        <li class="menu-item" data-action="Xnum" data-xnum="7">7枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="1">1枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="2">2枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="3">3枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="4">4枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="5">5枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="6">6枚</li>
+        <li class="menu-item submenu-item" data-action="Xnum" data-xnum="7">7枚</li>
       </ul>
     </div>
-    
-    <!--デッキ(P2)-->
-    <div class="p2_deck" id="p2_deck"></div>
+
     
     <!--トラッシュ + トラッシュメニュー-->
-    <div class="dropzone trash menuBtn" data-menu="trash_menu" id="trash"></div>
+    <div class="dropzone trash menuBtn cardBox" data-menu="trash_menu" id="trash">Trash</div>
     <div class="menu" id="trash_menu"  data-pr="trash" data-lf="r" data-top="t" data-lfmg="1" data-topmg="1">
       <ul>
         <li class="menu-item" data-action="trash_show">中身を見る</li>
@@ -175,34 +175,66 @@
     </div>
     
     <!--サイド + サイドメニュー-->
-    <div class="dropzone side menuBtn" data-menu="side_menu" id="side"></div>
+    <div class="dropzone side menuBtn cardBox" data-menu="side_menu" id="side">Side</div>
     <div class="menu" id="side_menu"  data-pr="side" data-lf="r" data-top="t" data-lfmg="1" data-topmg="1">
       <ul>
         <li class="menu-item" data-action="side_draw1">1枚引く</li>
         <li class="menu-item" data-action="side_draw2">2枚引く</li>
         <li class="menu-item" data-action="side_show">中身を見る</li>
+        <li class="menu-item" data-action="side_torikae">とりかえチケット</li>
       </ul>
     </div>
+    
+    <!--p2 + p2メニュー-->
+    <div class="p2_menu menuBtn" data-menu="p2_menu" id="p2menu">P2Menu</div>
+    <div class="menu" id="p2_menu"  data-pr="p2menu" data-lf="r" data-top="t" data-lfmg="1" data-topmg="1">
+      <ul>
+        <li class="menu-item" data-action="p2_trashShow">トラッシュの中身を見る</li>
+      </ul>
+    </div>
+    
+    
+    <!--プレイヤー交代ボタン-->
+    <div class="btnChangePl" id="btnChangePl" style="visibility:hidden">
+      <img src="https://cdn.glitch.global/2e2a8bc3-103f-4a29-a6b5-c688c783156d/yajirushi08_cycle.png?v=1735552730304"
+      alt="ボタンイメージ" class="btnImg" id="btnChangeImg" />
+    </div>
+    
   </div>
   
   <!--ここからプレイマット範囲外-->
-  <div style="display:flex">
+      
+  <!--P2カード置き場-->
+  <div class="p2_cardBox" id="p2_deck"></div>
+  <div class="p2_cardBox" id="p2_trash"></div>
+  <div class="p2_cardBox" id="p2_side"></div>
+  <div class="p2_cardBox" id="p2_hand"></div>
+
+  <!--下部デッキコード入力欄+ボタン-->
+  <div style="display:flex;position:relative">
     <!--ボタンとテキスト-->
-    <div>
-      <!--デッキコード入力-->
-      <form id="scrapeForm">
-        <input type="text" id="urlInput" name="url" placeholder="デッキコードを入力">
-        <button type="submit">送信</button>
-      </form>
-      <!--部屋番号入力-->
-      <div id="photonForm">
-        <input type="text" id="roomInput" name="roomNo" placeholder="ルーム番号を入力">
-        <button id="photonButton">送信</button>
-      </div>
-    </div>
+    <input class="inputText" type="text" id="urlInput" name="url" placeholder="デッキコードを入力">
+    <div class="submitBtn menuBtn" id="inputBtn" data-menu="input_menu" ></div>
     <!--ログ-->
     <div class="result" id="result"></div>
+    <div class="menu" id="input_menu"  data-pr="inputBtn" data-lf="l" data-top="b" data-lfmg="1" data-topmg="1">
+      <ul>
+        <li class="menu-item" data-action="deckLoad">デッキ読込み</li>
+        <li class="menu-item menuBtnMenu" data-menu="inputXmenu" data-action="roomJoin">ルームに参加</li>
+        <li class="menu-item" data-action="p2Change">2人回し</li>
+      </ul>
+    </div>
+    <template id="inputXmenu_temp">
+      <li class="menu-item submenu-item" data-action="XroomJoin" data-xnum="1">1</li>
+    </template>
+    <div class="menu submenu" id="inputXmenu"  data-pr="inputBtn" data-lf="r" data-top="b" data-lfmg="1" data-topmg="1">
+      <ul id="inputXmenu_ul">
+        <li class="menu-item submenu-item" data-action="roomReconect">サーバ再接続</li>
+        <li class="menu-item submenu-item" data-action="roomCreate">部屋を立てる</li>
+      </ul>
+    </div>
   </div>
+
 
   <!-- モーダル -->
   <div id="modal" class="modal" data-src="">
@@ -212,6 +244,7 @@
       <button class="move" data-target="trash">トラッシュ</button>
       <button class="move" data-target="deck">山札(下)</button>
       <button class="move" data-target="free">フリー</button>
+      <button class="ajast">整列表示</button>
       <div class="image-container">
       </div>
     </div>

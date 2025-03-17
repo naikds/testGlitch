@@ -1,5 +1,5 @@
-import {arrangeImages} from './arrange.js';
-import {sendCardInfo} from './photon_src.js';
+import {arrangeImages,preDataSave} from './arrange.js';
+import {sendCardInfo,sendplayerInfo} from './photon_src.js';
 
 export function setCardDrag(){
   const handCardWidth = 0.7;
@@ -9,9 +9,12 @@ export function setCardDrag(){
   draggables.forEach(draggable => {
     //ドラッグ開始
     draggable.addEventListener('touchstart', (e) => {
+      if(!e.target.classList.contains('draggable')){return;}
+      preDataSave();
       const touch = e.targetTouches[0];
       e.target.dataset.touchId = touch.identifier;
       e.target.dataset.moto = e.target.offsetParent.id;
+      e.target.dataset.handIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
       document.getElementById('container').appendChild(e.target);
       e.target.style.position = 'absolute';
       e.target.style.left = `${touch.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
@@ -49,8 +52,11 @@ export function setCardDrag(){
           }
 
           if (dropzone.classList.contains('hand')) {
-            const offsetX = target.offsetLeft - dropzone.offsetLeft;
-            const index = Math.floor(offsetX / (target.offsetWidth * handCardWidth)) + 1;
+            const offsetX = target.offsetLeft - dropzone.offsetLeft + dropzone.scrollLeft;
+            let index = Math.floor(offsetX / (target.offsetWidth * handCardWidth)) + 2;
+            if(target.dataset.handIndex < index){
+              index = index - 1;
+            }
             if (index < dropzone.children.length) {
               dropzone.insertBefore(target, dropzone.children[index]);
             }

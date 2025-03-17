@@ -3,13 +3,6 @@ import {sendCardInfo} from './photon_src.js';
 import {shufflDeck} from './menuBtn.js';
 
 export function setModal(){
-  // モーダルを開く
-  document.querySelectorAll('button[id^="openModal"]').forEach(button => {
-    button.addEventListener('click', function () {
-      const modalId = this.id.replace('open', '').toLowerCase();
-      document.getElementById(modalId).style.display = "block";
-    });
-  });
 
   // モーダルを閉じる
   document.querySelectorAll('.close').forEach(span => {
@@ -39,4 +32,42 @@ export function setModal(){
       sendCardInfo();
     });
   });
+  
+  //id順に整列する
+  document.querySelector(".ajast").addEventListener('click', function () {
+    const currentModal = this.closest('.modal');
+    const images = Array.from(currentModal.querySelectorAll('.card'));
+    images.sort((a,b) => {
+      const aidNum = parseInt(a.id.match(/\d+/)[0],10);
+      const bidNum = parseInt(b.id.match(/\d+/)[0],10);
+      return aidNum - bidNum;
+    })
+    images.forEach(img => {
+      currentModal.querySelector('.image-container').appendChild(img);
+    });
+  });
+}
+
+export function showModalCardIds(cardIds){
+    const modal = document.getElementById('modal');
+    const targetContainer = modal.querySelector('.image-container');
+    let cards = [];
+  
+    cardIds.split(',').forEach(id =>{
+      cards.push(document.getElementById('p2_card' + id));
+    })
+  
+    const cardCopy = Array.from(cards).map(child => child.cloneNode(true));
+  
+    cardCopy.forEach(img => {
+      targetContainer.appendChild(img);
+    });
+  
+  
+    //modalのボタンを全て見えなくなるようにする
+    modal.querySelectorAll('button').forEach(move=>{
+        move.style.display = 'none';
+    });
+  
+    modal.style.display = "block";
 }

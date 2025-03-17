@@ -1,3 +1,5 @@
+import {sendplayerInfo} from './photon_src.js';
+
 // イメージの配置を調整する関数
 export function arrangeImages() {
     //余計なスタイルは削除
@@ -11,7 +13,7 @@ export function arrangeImages() {
 
     //手札
     arrangeHand();
-
+  
     //バトル場・ベンチ
     arrangeBattleP1();
     arrangeBattleP2();
@@ -22,6 +24,9 @@ export function arrangeImages() {
     //スタジアム
     arrangeStudium();
   
+    updp1Info();
+  
+    preDataLoad();
 }
 
 //手札の配置を調整
@@ -162,4 +167,28 @@ function bagReset(){
     par.appendChild(img);
   })
   
+}
+
+
+//プレイヤーの情報を更新する
+function updp1Info() {
+    const p1info = document.getElementById('p1Info');
+    const hand = document.getElementById('hand');
+    const deck = document.getElementById('deck');
+    const side = document.getElementById('side');
+    p1info.textContent = `自　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`;
+    sendplayerInfo();
+}
+
+let handSc = 0;
+export function handScSave(scroll){
+  handSc = scroll;
+}
+
+export function preDataSave(){
+  handScSave(document.getElementById('hand').scrollLeft);
+}
+
+function preDataLoad(){
+  document.getElementById('hand').scrollLeft = handSc;
 }
