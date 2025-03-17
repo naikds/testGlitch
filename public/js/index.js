@@ -9,7 +9,6 @@ import {setField} from './setField.js';
 document.addEventListener('DOMContentLoaded', (event) => {
   setField();
   setCardDrag();
-  setDeckLoad();
   setModal();
   setOther();
   setMenuBtn();

@@ -169,6 +169,17 @@ body {
     left 7%;
 }
 
+.p2_menu{
+  position: absolute;
+  width: 8%;
+  height: 9%;
+  top: 12%;
+  left: 91%;
+  border: 1px solid red;
+  background :white;
+  writing-mode: vertical-lr;
+}
+
 .hand {
     position: absolute;
     width: 85%;
@@ -209,14 +220,33 @@ body {
     justify-content:center;
 }
 
+.btnChangePl{
+    position: absolute;
+    width: 11%;
+    height: 6%;
+    top: 80%;
+    left: 88%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.btnImg{
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+}
 
 /*フィールド情報（非公開）*/
 .deck {
     position: absolute;
-    width: 7%;
+    width: 8%;
     height: 9%;
     top: 47%;
     left: 91%;
+    border: 1px solid red;
+    background :white;
+    writing-mode: vertical-lr;
 }
 
 .trash {
@@ -225,6 +255,9 @@ body {
     height: 9%;
     top: 57%;
     left: 91%;
+    border: 1px solid red;
+    background :white;
+    writing-mode: vertical-lr;
 }
 
 .side {
@@ -233,6 +266,9 @@ body {
     height: 9%;
     top: 67%;
     left: 91%;
+    border: 1px solid red;
+    background :white;
+    writing-mode: vertical-lr;
 }
 
 
@@ -276,7 +312,7 @@ body {
   width:13%;
 }
 .modal .card{
-  width:10%;
+  width:15%;
 }
 .hand > .card{
   width:13%;
@@ -307,7 +343,7 @@ body {
   position: absolute;
 }
 
-.p2_deck > .p2_card{
+.p2_cardBox > .p2_card{
   display:none;
 }
 
@@ -346,7 +382,8 @@ body {
 
 /*公開するカード（p2）*/
 .modal .p2_card{
-  width:10%;
+  transform: rotate(0deg);
+  width:15%;
 }
 .free > .p2_card{
   width:42%;
@@ -543,4 +580,20 @@ body {
 .fade-in-out {
     animation: fadeInOut 0.2s infinite;
     pointer-events: none;
+}
+
+.inputText{
+  font-size:16px;
+  transform:scale(0.75);
+  transform-origin: 0 0;
+}
+
+.submitBtn{
+    position: absolute;
+    width: 9.5%;
+    height: 68%;
+    left :41%;
+    border: 1px solid red;
+    background :white;
+    margin-right: 2%;
 }

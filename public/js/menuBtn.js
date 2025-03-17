@@ -1,5 +1,7 @@
-import {arrangeImages} from './arrange.js';
-import {sendCardInfo,sendDamage,sendplayerInfo} from './photon_src.js';
+import {arrangeImages,preDataSave,handScSave} from './arrange.js';
+import {sendCardInfo,sendDamage,sendplayerInfo,joinRoom,createRoom,sendCardModal,reConnect} from './photon_src.js';
+import {setDeckLoad} from './deckLoad.js';
+import {showModalCardIds} from './modal.js';
 
 export function setMenuBtn(){
     //ボタンのメニュー設定
@@ -29,10 +31,10 @@ export function setMenuBtn(){
                     item.style.backgroundColor = '#0078d4';
                     if(item.classList.contains('menuBtnMenu')){
                       btnAct(item, e.target.id);
-                    }else if(item.dataset.action === 'Xnum'){
+                    }else if(item.classList.contains('submenu-item')){
                     }
                     else{
-                      document.getElementById('deckXmenu').style.display = 'none';
+                      document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
                     }
                 }
             });
@@ -41,6 +43,7 @@ export function setMenuBtn(){
         //メニューで選ばれた項目の処理を実行する
         menuBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
+            preDataSave();
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
             const menuItems = document.querySelectorAll('.menu-item');
@@ -50,7 +53,7 @@ export function setMenuBtn(){
                     btnAct(item, e.target.id);
                 }
             });
-            document.getElementById('deckXmenu').style.display = 'none';
+            document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
             contextMenu.style.display = 'none';
         });
     })
@@ -58,36 +61,23 @@ export function setMenuBtn(){
 
 //メニューボタン処理
 function btnAct(item, btnid) {
-  const actionNm = item.getAttribute('data-action');  
-  const deck = document.getElementById('deck');
-    switch (actionNm) {
+  fieldUpAct(item,btnid);
+  fieldNoUpAct(item,btnid);
+  photonAct(item,btnid);
+}
 
+//カード位置を更新する系
+function fieldUpAct(item, btnid){
+  const actionNm = item.getAttribute('data-action');  
+  const deck = document.getElementById('deck'); 
+  const hand = document.getElementById('hand');
+  const side = document.getElementById('side');
+    switch (actionNm) {
         //カードを1枚引く
         case 'draw':
             moveCard('deck', 'hand', 1, true, false);
+           handScSave(hand.scrollWidth);
             break;
-
-        //デッキをシャッフルする
-        case 'deck_shufl':
-          shufflDeck();
-            break;
-
-        //デッキの中身をモーダルで表示する
-        case 'deck_show':
-            showModal('deck');
-            break;
-        //トラッシュの中身をモーダルで表示する
-        case 'trash_show':
-            showModal('trash');
-            break;
-        //サイドの中身をモーダルで表示する
-        case 'side_show':
-            showModal('side');
-            break;
-        //手札をモーダルで表示する
-      case 'hand_show':
-          showModal('hand');
-          break;
         //サイドを1枚引く
         case 'side_draw1':
             moveCard('side', 'hand', 1, false, false);
@@ -165,6 +155,46 @@ function btnAct(item, btnid) {
             shufflDeck();
             document.getElementById('damageSel_battle').value = '0';
             break;
+        //とりかえチケットを使う
+        case'side_torikae':
+            const sideCount = side.querySelectorAll('.card').length;
+            moveAllCard('side', 'deck', false);
+            moveCard('deck', 'side', sideCount, true, false);
+            break;
+        default:
+          return;
+    }
+    arrangeImages();
+    sendCardInfo();
+    sendDamage();
+}
+
+//単にメニュー開くだけとか
+function fieldNoUpAct(item,btnid){
+    const actionNm = item.getAttribute('data-action');  
+  const deck = document.getElementById('deck');
+  const p2_trash = document.getElementById('p2_trash');
+    switch (actionNm) {
+        //デッキをシャッフルする
+        case 'deck_shufl':
+          shufflDeck();
+            break;
+        //デッキの中身をモーダルで表示する
+        case 'deck_show':
+            showModal('deck');
+            break;
+        //トラッシュの中身をモーダルで表示する
+        case 'trash_show':
+            showModal('trash');
+            break;
+        //サイドの中身をモーダルで表示する
+        case 'side_show':
+            showModal('side');
+            break;
+        //手札をモーダルで表示する
+      case 'hand_show':
+          showModal('hand');
+          break;
         case 'deck_Xshow':
             //自分のIDを下位メニューに伝える
             const xMenu = document.getElementById('deckXmenu');
@@ -174,11 +204,6 @@ function btnAct(item, btnid) {
             })
         
             //Xmenuを表示
-            xMenu.style.top = `${deck.offsetTop}px`;
-            xMenu.style.left = `${deck.offsetLeft - item.offsetWidth - xMenu.offsetWidth -20}px`
-            if (xMenu.offsetLeft < 0) {
-              xMenu.style.left = `${item.offsetLeft + item.offsetWidth}px`
-            }
             xMenu.style.display = 'block';
             break;
         case 'Xnum':
@@ -186,10 +211,64 @@ function btnAct(item, btnid) {
             const num = item.dataset.xnum;
             showModalNum(src,num,true);
             break;
+        case 'p2_trashShow':
+            let p2_trashcards = [];
+            p2_trash.querySelectorAll('.p2_card').forEach(el => {
+              p2_trashcards.push(el.id.match(/\d+$/)[0]);
+            })
+            showModalCardIds(p2_trashcards.join(','));
+          break;
+        case 'p2Change':
+          const p2chbtn = document.getElementById('btnChangePl');
+          const inputmenu = document.getElementById('input_menu');
+          p2chbtn.style.visibility = '';
+          inputmenu.querySelector('[data-action="roomJoin"]').style.display ='none';
+          break;
+        default:
+          return;
     }
-    arrangeImages();
-    sendCardInfo();
-    sendDamage();
+}
+//Photon系
+function photonAct(item,btnid){
+    const actionNm = item.getAttribute('data-action');  
+  const deck = document.getElementById('deck');
+  const hand = document.getElementById('hand');
+  const inputmenu = document.getElementById('input_menu');
+    switch (actionNm) {
+        case 'deckLoad':
+            document.getElementById('inputXmenu').style.display = 'block';
+            setDeckLoad();
+            break;
+        case 'roomJoin':
+            const inputXMenu = document.getElementById('inputXmenu');
+            inputXMenu.style.display = 'block';
+            break;
+        case 'XroomJoin':
+            inputmenu.querySelector('[data-action="p2Change"]').style.display ='none';
+            joinRoom(item.dataset.xnum);
+            break;
+        case 'roomCreate':
+            inputmenu.querySelector('[data-action="p2Change"]').style.display ='none';
+            const roomCnt = document.getElementById('inputXmenu_ul').childElementCount;
+            createRoom(`room${roomCnt}`);
+            break;
+        case 'deckReLoad':
+            const url = 'https://www.pokemon-card.com/deck/deck.html?deckID=' + document.getElementById('urlInput').value;
+            window.open(url,'_blank');
+            break;
+        case 'hand_p2show':
+            let handIdnum = [];
+            hand.querySelectorAll('.card').forEach(el => {
+              handIdnum.push(el.id.match(/\d+$/)[0]);
+            })
+            sendCardModal(handIdnum.join(','));
+            break;
+        case 'roomReconect':
+            reConnect();
+            break;
+        default:
+          return;
+    }
 }
 
 export function shufflDeck(){
@@ -197,7 +276,7 @@ export function shufflDeck(){
     const items = Array.from(deck.children);
     const shuffledItems = shuffleArray(items);
 
-    deck.innerHTML = '';// コンテナをクリア
+    deck.querySelectorAll(".card").forEach(child=>child.remove());
 
     // シャッフルされた要素を再度追加
     shuffledItems.forEach(item => {
@@ -234,7 +313,6 @@ function moveCard(moto_id, saki_id, num, moto_first, saki_first) {
             saki.insertBefore(card, saki.firstChild);
         }
     }
-    updp1Info();
 }
 
 //カードをすべて移動する
@@ -247,7 +325,6 @@ function moveAllCard(motoId, sakiId, saki_first) {
     } else {
         motoCard.forEach(card => { saki.appendChild(card) });
     }
-    updp1Info();
 }
 
 //モーダルで中身を表示する
@@ -257,6 +334,7 @@ function showModal(srcId) {
     const src = document.getElementById(srcId);
     modal.setAttribute('data-src', srcId);
 
+  
     const cardCopy = Array.from(src.children).map(child => child.cloneNode(true));
 
     cardCopy.forEach(img => {
@@ -267,6 +345,8 @@ function showModal(srcId) {
         targetContainer.appendChild(img);
     });
   
+    modal.querySelectorAll('button').forEach(b=>{b.style.display = '';});
+  
     //modalのボタンを一部以外は見えるようにする
     modal.querySelectorAll('.move').forEach(move=>{
       if(move.dataset.target === srcId){  
@@ -276,7 +356,6 @@ function showModal(srcId) {
       }    
     });
   
-    //modalのボタンから今回見てるやつは外す
     modal.style.display = "block";
 }
 
@@ -287,8 +366,10 @@ function showModalNum(srcId,num,first) {
     const src = document.getElementById(srcId);
     modal.setAttribute('data-src', srcId);
 
+  　
     const cardCopy = Array.from(src.children).map(child => child.cloneNode(true));
     
+    if(num > cardCopy.length) num = cardCopy.length;
     for(let i=0;i<num;i++){
       const img = cardCopy[i];
       // 画像の選択イベントを追加
@@ -298,6 +379,7 @@ function showModalNum(srcId,num,first) {
       targetContainer.appendChild(img);
     }
     
+    modal.querySelectorAll('button').forEach(b=>{b.style.display = '';});
     //modalのボタンをすべて見えるようにする
     modal.querySelectorAll('.move').forEach(move=>{
         move.style.display = ''; 
@@ -306,15 +388,11 @@ function showModalNum(srcId,num,first) {
     modal.style.display = "block";
 }
 
-//プレイヤーの情報を更新する
-function updp1Info() {
-    const p1info = document.getElementById('p1Info');
-    const hand = document.getElementById('hand');
-    const deck = document.getElementById('deck');
-    const side = document.getElementById('side');
-    p1info.textContent = `自　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`;
-    sendplayerInfo();
+//下位メニューを表示する
+function showXmenu(){
+  
 }
+
 
 //要素が画面内かどうか調べる
 function isElInViewport(el){
