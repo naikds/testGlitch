@@ -209,6 +209,9 @@ function fieldNoUpAct(item,btnid){
         //トラッシュの中身をモーダルで表示する
         case 'trash_show':
             showModal('trash');
+            //トラッシュの場合は整列しておく
+            let ajstbtn= document.querySelector(".ajast");
+            ajstbtn.click();
             break;
         //サイドの中身をモーダルで表示する
         case 'side_show':
@@ -294,6 +297,7 @@ function photonAct(item,btnid){
     }
 }
 
+//デッキシャッフルする
 export function shufflDeck(){
     const deck = document.getElementById('deck');
     const items = Array.from(deck.children);
