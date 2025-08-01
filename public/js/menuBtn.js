@@ -178,6 +178,12 @@ function fieldUpAct(item, btnid){
             moveAllCard('hand', 'deck', false);
             moveCard('deck', 'hand', sideCount, true, false);
             break;
+        //博士の研究を使う
+        case 'ha-kase':
+            //手札をトラッシュして山札から7枚引く
+            moveAllCard('hand','trash',false);
+            moveCard('deck', 'hand', 7, true, false);
+            break;
         default:
           return;
     }
