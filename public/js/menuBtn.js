@@ -72,6 +72,7 @@ function fieldUpAct(item, btnid){
   const deck = document.getElementById('deck'); 
   const hand = document.getElementById('hand');
   const side = document.getElementById('side');
+  const sideCount = side.querySelectorAll('.card').length; //サイドの枚数
     switch (actionNm) {
         //カードを1枚引く
         case 'draw':
@@ -156,10 +157,26 @@ function fieldUpAct(item, btnid){
             document.getElementById('damageSel_battle').value = '0';
             break;
         //とりかえチケットを使う
-        case'side_torikae':
-            const sideCount = side.querySelectorAll('.card').length;
+        case 'side_torikae':
             moveAllCard('side', 'deck', false);
             moveCard('deck', 'side', sideCount, true, false);
+            break;
+        //リーリエの決心を使う
+        case 'ri-rie':
+            //手札を山に戻す→シャッフル→サイド枚数が6枚なら8ドロー、そうでないなら6ドロー。このカードつっっっよ
+            moveAllCard('hand','deck',false);
+            shufflDeck();
+            if(sideCount===6){
+                moveCard('deck', 'hand', 8, true, false);
+            } else {
+                moveCard('deck', 'hand', 6, true, false);
+            }
+            break;
+        //ナンジャモを使う
+        case 'na-njamo':
+            //手札をシャッフルして山下に→サイドの枚数だけドローだけど手札シャッフルめんどいからそのまま山下おくる
+            moveAllCard('hand', 'deck', false);
+            moveCard('deck', 'hand', sideCount, true, false);
             break;
         default:
           return;
