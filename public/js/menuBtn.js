@@ -237,6 +237,10 @@ function fieldNoUpAct(item,btnid){
             const num = item.dataset.xnum;
             showModalNum(src,num,true);
             break;
+        case 'hand_Xshow':
+            const handXmenu = document.getElementById('handXmenu');
+            handXmenu.style.display = 'block';//Xmenuを表示
+            break;
         case 'p2_trashShow':
             let p2_trashcards = [];
             p2_trash.querySelectorAll('.p2_card').forEach(el => {
