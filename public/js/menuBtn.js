@@ -19,12 +19,12 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の色を変える
+        let selectItem=null;
         menuBtn.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
             const menuItems = document.querySelectorAll('.menu-item');
-            let selectItem=null;
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
                 const rect = item.getBoundingClientRect();
@@ -54,15 +54,16 @@ export function setMenuBtn(){
         menuBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
             preDataSave();
-            const touchY = e.changedTouches[0].clientY;
-            const touchX = e.changedTouches[0].clientX;
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
-                    btnAct(item, e.target.id);
-                }
-            });
+            // const touchY = e.changedTouches[0].clientY;
+            // const touchX = e.changedTouches[0].clientX;
+            // const menuItems = document.querySelectorAll('.menu-item');
+            btnAct(selectItem, e.target.id);
+            // menuItems.forEach(item => {
+            //     const rect = item.getBoundingClientRect();
+            //     if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
+            //         btnAct(item, e.target.id);
+            //     }
+            // });
             document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
             contextMenu.style.display = 'none';
         });
