@@ -13,13 +13,14 @@ export function setMenuBtn(){
         //メニューの位置を調整
 
         //メニューを表示する
+        let selectItem=null;
         menuBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            selectItem=null;
             contextMenu.style.display = 'block';
         });
 
         //メニューで選ばれた項目の色を変える
-        let selectItem=null;
         menuBtn.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touchY = e.changedTouches[0].clientY;
@@ -66,6 +67,7 @@ export function setMenuBtn(){
             // });
             document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
             contextMenu.style.display = 'none';
+            selectItem=null;
         });
     })
 }
