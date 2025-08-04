@@ -26,6 +26,7 @@ export function setMenuBtn(){
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
             const menuItems = document.querySelectorAll('.menu-item');
+            selectItem=null;
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
                 const rect = item.getBoundingClientRect();
