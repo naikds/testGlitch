@@ -9,7 +9,8 @@ export function setMenuBtn(){
     menuBtns.forEach(menuBtn => {
         //メニューボタンを取得
         const contextMenu = document.getElementById(menuBtn.getAttribute('data-menu'));
-
+        const menuItems = document.querySelectorAll('.menu-item');
+        const submenus = document.querySelectorAll('.submenu'); 
         //メニューの位置を調整
 
         //メニューを表示する
@@ -25,7 +26,6 @@ export function setMenuBtn(){
             e.preventDefault();
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
-            const menuItems = document.querySelectorAll('.menu-item');
             selectItem=null;
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
@@ -40,14 +40,16 @@ export function setMenuBtn(){
                 }
             });
 
+            //選択しているitemの見た目を変更する。itemによって動作を変える。
+            //1.下位メニューを持つメニューの場合、select段階でbtnActを起動
+            //2.下位メニューの場合、何もしない
+            //3.その他メニューの場合、下位メニューの表示をすべて消す
             if(selectItem != null){
                 selectItem.style.backgroundColor = '#0078d4';
                 if(selectItem.classList.contains('menuBtnMenu')){
                     btnAct(selectItem, e.target.id);
-                }else if(selectItem.classList.contains('submenu-item')){
-                }
-                else{
-                    document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
+                }else if(!selectItem.classList.contains('submenu-item')){
+                    submenus.forEach(sub =>{sub.style.display = 'none';});
                 }
             }
         });
@@ -56,19 +58,18 @@ export function setMenuBtn(){
         menuBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
             preDataSave();
-            const touchY = e.changedTouches[0].clientY;
-            const touchX = e.changedTouches[0].clientX;
-            // const menuItems = document.querySelectorAll('.menu-item');
-            
-            // menuItems.forEach(item => {
+            if(selectItem){
+                const touchY = e.changedTouches[0].clientY;
+                const touchX = e.changedTouches[0].clientX;
+                
                 const rect = selectItem.getBoundingClientRect();
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
                     btnAct(selectItem, e.target.id);
                 }
-            // });
-            document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
+            }
+
+            submenus.forEach(sub =>{sub.style.display = 'none';});
             contextMenu.style.display = 'none';
-            selectItem=null;
         });
     })
 }
