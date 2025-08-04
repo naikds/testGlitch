@@ -24,20 +24,30 @@ export function setMenuBtn(){
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
             const menuItems = document.querySelectorAll('.menu-item');
+            let selectItem=null;
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
                 const rect = item.getBoundingClientRect();
+
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
-                    item.style.backgroundColor = '#0078d4';
-                    if(item.classList.contains('menuBtnMenu')){
-                      btnAct(item, e.target.id);
-                    }else if(item.classList.contains('submenu-item')){
-                    }
-                    else{
-                      document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
+                    //複数重なっていた場合サブメニュー優先
+                    if(selectItem == null) selectItem = item;
+                    if(selectItem != null && item.classList.contains('submenu-item')){
+                        selectItem = item;
                     }
                 }
             });
+
+            if(selectItem != null){
+                selectItem.style.backgroundColor = '#0078d4';
+                if(selectItem.classList.contains('menuBtnMenu')){
+                    btnAct(selectItem, e.target.id);
+                }else if(selectItem.classList.contains('submenu-item')){
+                }
+                else{
+                    document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
+                }
+            }
         });
 
         //メニューで選ばれた項目の処理を実行する
