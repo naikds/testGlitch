@@ -54,15 +54,15 @@ export function setMenuBtn(){
         menuBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
             preDataSave();
-            // const touchY = e.changedTouches[0].clientY;
-            // const touchX = e.changedTouches[0].clientX;
+            const touchY = e.changedTouches[0].clientY;
+            const touchX = e.changedTouches[0].clientX;
             // const menuItems = document.querySelectorAll('.menu-item');
-            btnAct(selectItem, e.target.id);
+            
             // menuItems.forEach(item => {
-            //     const rect = item.getBoundingClientRect();
-            //     if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
-            //         btnAct(item, e.target.id);
-            //     }
+                const rect = selectItem.getBoundingClientRect();
+                if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
+                    btnAct(selectItem, e.target.id);
+                }
             // });
             document.querySelectorAll('.submenu').forEach(sub =>{sub.style.display = 'none';});
             contextMenu.style.display = 'none';
