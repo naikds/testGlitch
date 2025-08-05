@@ -76,8 +76,6 @@ client.onRoomListUpdate = function(rooms){
   })
 }
 
-// 接続を確立
-client.connectToRegionMaster(region);
 
 //ルーム作成処理
 export function createRoom(roomName){
