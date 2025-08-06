@@ -35,8 +35,6 @@ export function setDeckLoad(){
       let cnt = 0;
       images.forEach(img => {
         const imgSrc = img.src;
-        const baseUri = 'https://pokeca.onrender.com';//なぜかゴミがつくのでトリムするよう
-        const pokeUrl = 'https://www.pokemon-card.com/';//ゴミの代わりにつけるよう
 
         for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
           deckIndex = deckIndex + 1;

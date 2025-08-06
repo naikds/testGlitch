@@ -149,10 +149,17 @@ fastify.post("/scrape", async (request, reply) => {
     await page.waitForSelector("#cardImagesView");
 
     // JavaScript実行後のDOMを取得
-    const bodyHTML = await page.evaluate(() => 
-      document.querySelector("#cardImagesView").innerHTML
-    );
+    const bodyHTML = await page.evaluate(() => {
+        const container = document.querySelector("#cardImagesView").innerHTML;
 
+        container.querySelectorAll("img").forEach(img => {
+          const imgUrl = new URL(img.src,document.baseURI);
+          img.src = imgUrl.href;
+        });
+
+        return container.innerHTML;
+      }
+    );
 
     await browser.close();
     return reply.send({ body: bodyHTML });
@@ -161,6 +168,5 @@ fastify.post("/scrape", async (request, reply) => {
     return reply.status(500).send({ error: "An error occurred during scraping" });
   }
 });
-
 
 
