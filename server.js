@@ -150,14 +150,14 @@ fastify.post("/scrape", async (request, reply) => {
 
     // JavaScript実行後のDOMを取得
     const bodyHTML = await page.evaluate(() => {
-      const baseUrl = document.baseURI; // 現在のページのベースURL
+      const baseUrl = 'https://www.pokemon-card.com/'; // 取得先ページのurl
       const container = document.querySelector("#cardImagesView");
 
       // imgタグのsrcを絶対URLに変換
       container.querySelectorAll("img").forEach(img => {
-        if (img.src.startsWith("/")) {
-          img.src = new URL(img.src, baseUrl).href;
-        }
+        const imgUrl = new URL(img.src,document.baseURI);
+        imgUrl.hostname = 'www.pokemon-card.com';
+        img.src = imgUrl.href;
       });
 
       return container.innerHTML;
@@ -165,36 +165,6 @@ fastify.post("/scrape", async (request, reply) => {
 
     await browser.close();
     return reply.send({ body: bodyHTML });
-  } catch (error) {
-    console.error("Error:", error);
-    return reply.status(500).send({ error: "An error occurred during scraping" });
-  }
-});
-
-fastify.post("/scrapes", async (request, reply) => {
-  const deckCode = request.body.url; // POSTリクエストのボディからURLを取得
-  const url = `https://www.pokemon-card.com/deck/deck.html?deckID=${deckCode}`;
-
-  if (!deckCode) {
-    return reply.status(400).send({ error: "URL is required" });
-  }
-
-  try {
-    const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle2" });
-
-    console.log("OK1");
-    const bodyHTML = await page.evaluate(() => {
-      return document.querySelector("#cardImagesView").innerHTML;
-    });
-
-    await browser.close();
-
-    console.log("OK4");
-    return reply.send({ body: bodyHTML }); // スクレイピング結果を返す
   } catch (error) {
     console.error("Error:", error);
     return reply.status(500).send({ error: "An error occurred during scraping" });
