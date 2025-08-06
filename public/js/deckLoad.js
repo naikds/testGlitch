@@ -34,11 +34,10 @@ export function setDeckLoad(){
       let deckIndex = 0;
       let cnt = 0;
       images.forEach(img => {
-        const imgSrc = img.src;
-
+        
         for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
           deckIndex = deckIndex + 1;
-          document.getElementById('card' + deckIndex).src = pokeUrl + imgSrc.replace(baseUri, '');//カードのurl
+          document.getElementById('card' + deckIndex).src = img.src//カードのurl
           document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
           document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2
         }
