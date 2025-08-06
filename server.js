@@ -149,19 +149,10 @@ fastify.post("/scrape", async (request, reply) => {
     await page.waitForSelector("#cardImagesView");
 
     // JavaScript実行後のDOMを取得
-    const bodyHTML = await page.evaluate(() => {
-      const baseUrl = 'https://www.pokemon-card.com/'; // 取得先ページのurl
-      const container = document.querySelector("#cardImagesView");
+    const bodyHTML = await page.evaluate(() => 
+      document.querySelector("#cardImagesView").innerHTML
+    );
 
-      // imgタグのsrcを絶対URLに変換
-      container.querySelectorAll("img").forEach(img => {
-        const imgUrl = new URL(img.src,document.baseURI);
-        imgUrl.hostname = 'www.pokemon-card.com';
-        img.src = imgUrl.href;
-      });
-
-      return container.innerHTML;
-    });
 
     await browser.close();
     return reply.send({ body: bodyHTML });
