@@ -150,7 +150,7 @@ fastify.post("/scrape", async (request, reply) => {
 
     // JavaScript実行後のDOMを取得
     const bodyHTML = await page.evaluate(() => {
-        const container = document.querySelector("#cardImagesView").innerHTML;
+        const container = document.querySelector("#cardImagesView");
 
         container.querySelectorAll("img").forEach(img => {
           const imgUrl = new URL(img.src,document.baseURI);
