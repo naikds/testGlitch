@@ -411,8 +411,7 @@ function showModalNum(srcId,num,first) {
     const targetContainer = modal.querySelector('.image-container');
     const src = document.getElementById(srcId);
     modal.setAttribute('data-src', srcId);
-
-  　
+    
     const cardCopy = Array.from(src.children).map(child => child.cloneNode(true));
     
     if(num > cardCopy.length) num = cardCopy.length;
@@ -432,23 +431,4 @@ function showModalNum(srcId,num,first) {
     });
   
     modal.style.display = "block";
-}
-
-//下位メニューを表示する
-function showXmenu(){
-  
-}
-
-
-//要素が画面内かどうか調べる
-function isElInViewport(el){
-  const rect = el.getBoundingClientRect();
-  if(rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)){
-    return 1;
-  }
-  if(rect.right >= (window.innerWidth || document.documentElement.clientWidth)){
-    return 2;
-  }
-  
-  return 0;
 }

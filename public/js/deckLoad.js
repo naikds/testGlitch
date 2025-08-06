@@ -29,12 +29,11 @@ export function setDeckLoad(){
       const imageCnts = Array.from(doc.querySelectorAll('span')).filter(span => span.id.includes('picNumView'))
       //カードの種類(pke,gds,ene,sup,sta,too)
       const cardTags = Array.from(doc.querySelectorAll('a.appendBtn.countBtnBlock')).map(a => a.getAttribute('onclick').split('deck_')[1].substring(0, 3));
-      const deck = document.getElementById('deck');//デッキ
 
       let deckIndex = 0;
       let cnt = 0;
       images.forEach(img => {
-        
+
         for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
           deckIndex = deckIndex + 1;
           document.getElementById('card' + deckIndex).src = img.src//カードのurl
