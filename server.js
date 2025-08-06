@@ -149,9 +149,19 @@ fastify.post("/scrape", async (request, reply) => {
     await page.waitForSelector("#cardImagesView");
 
     // JavaScript実行後のDOMを取得
-    const bodyHTML = await page.evaluate(() => 
-      document.querySelector("#cardImagesView").innerHTML
-    );
+    const bodyHTML = await page.evaluate(() => {
+      const baseUrl = document.baseURI; // 現在のページのベースURL
+      const container = document.querySelector("#cardImagesView");
+
+      // imgタグのsrcを絶対URLに変換
+      container.querySelectorAll("img").forEach(img => {
+        if (img.src.startsWith("/")) {
+          img.src = new URL(img.src, baseUrl).href;
+        }
+      });
+
+      return container.innerHTML;
+    });
 
     await browser.close();
     return reply.send({ body: bodyHTML });
