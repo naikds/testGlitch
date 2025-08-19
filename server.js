@@ -124,14 +124,9 @@ let browser; // グローバルに保持
 const getBrowser = async () => {
   if (!browser) {
     browser = await puppeteer.launch({
-      headless: "new",
       args: [
         "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--disable-accelerated-2d-canvas",
-        "--window-size=1920x1080",
+        "--disable-setuid-sandbox"
       ],
     });
   }
