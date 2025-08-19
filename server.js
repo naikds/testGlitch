@@ -120,19 +120,6 @@ fastify.listen(
   }
 );
 
-let browser; // グローバルに保持
-const getBrowser = async () => {
-  if (!browser) {
-    browser = await puppeteer.launch({
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox"
-      ],
-    });
-  }
-  return browser;
-};
-
 fastify.post("/scrape", async (request, reply) => {
   const deckCode = request.body.url;
   const url = `https://www.pokemon-card.com/deck/deck.html?deckID=${deckCode}`;
@@ -142,7 +129,9 @@ fastify.post("/scrape", async (request, reply) => {
   }
 
   try {
-    const browser = await getBrowser();
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     const page = await browser.newPage();
 
     await page.setRequestInterception(true);
@@ -154,10 +143,10 @@ fastify.post("/scrape", async (request, reply) => {
       }
     });
 
-    await page.goto(url, { waitUntil: "networkidle2",timeout:10000 });
+    await page.goto(url, { waitUntil: "domcontentloaded" });
 
     // DOMが完全に読み込まれるまで待機
-    await page.waitForSelector("#cardImagesView",{timeout:5000});
+    await page.waitForSelector("#cardImagesView");
 
     // JavaScript実行後のDOMを取得
     const bodyHTML = await page.evaluate(() => {
@@ -172,7 +161,7 @@ fastify.post("/scrape", async (request, reply) => {
       }
     );
 
-    await page.close();
+    await browser.close();
     return reply.send({ body: bodyHTML });
   } catch (error) {
     console.error("Error:", error);
