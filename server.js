@@ -120,6 +120,24 @@ fastify.listen(
   }
 );
 
+let browser; // グローバルに保持
+const getBrowser = async () => {
+  if (!browser) {
+    browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--disable-accelerated-2d-canvas",
+        "--window-size=1920x1080",
+      ],
+    });
+  }
+  return browser;
+};
+
 fastify.post("/scrape", async (request, reply) => {
   const deckCode = request.body.url;
   const url = `https://www.pokemon-card.com/deck/deck.html?deckID=${deckCode}`;
@@ -129,24 +147,22 @@ fastify.post("/scrape", async (request, reply) => {
   }
 
   try {
-    const browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    const browser = await getBrowser();
     const page = await browser.newPage();
 
     await page.setRequestInterception(true);
     page.on('request', (req) => {
-      if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
+      if (['image', 'stylesheet', 'font','media'].includes(req.resourceType())) {
         req.abort();
       } else {
         req.continue();
       }
     });
 
-    await page.goto(url, { waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: "networkidle2",timeout:10000 });
 
     // DOMが完全に読み込まれるまで待機
-    await page.waitForSelector("#cardImagesView");
+    await page.waitForSelector("#cardImagesView",{timeout:5000});
 
     // JavaScript実行後のDOMを取得
     const bodyHTML = await page.evaluate(() => {
@@ -161,7 +177,7 @@ fastify.post("/scrape", async (request, reply) => {
       }
     );
 
-    await browser.close();
+    await page.close();
     return reply.send({ body: bodyHTML });
   } catch (error) {
     console.error("Error:", error);
