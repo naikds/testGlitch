@@ -4,6 +4,7 @@ import {setMenuBtn} from './menuBtn.js';
 import {setModal} from './modal.js';
 import {setOther} from './other.js';
 import {setField} from './setField.js';
+import {reConnect} from './photon_src.js'
 
 //初期読み込みstart
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   setModal();
   setOther();
   setMenuBtn();
+  reConnect();
 });
 
 
