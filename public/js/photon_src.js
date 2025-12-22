@@ -1,6 +1,7 @@
 import {arrangeImages} from './arrange.js';
 import {coinChange} from './other.js';
 import {showModalCardIds} from './modal.js';
+import {setAddMenuBtn} from './menuBtn.js';
 
 //Photonサーバ系
 // Photonサーバの設定
@@ -58,9 +59,11 @@ client.onRoomList = function(rooms){
   if(!rooms){return;}
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
+    clone.querySelector('.submenu-item').id = room.name;
     clone.querySelector('.submenu-item').dataset.xnum = room.name;
     clone.querySelector('.submenu-item').textContent = room.name;
     inputXmenu_ul.appendChild(clone);
+    setAddMenuBtn(room.name);
   })
 }
 client.onRoomListUpdate = function(rooms){
