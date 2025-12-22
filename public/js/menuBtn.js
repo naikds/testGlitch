@@ -77,7 +77,7 @@ export function setMenuBtn(){
 }
 
 export function setAddMenuBtn(addBtn){
-    let testCom = `ルーム追加`;
+    let testCom = `setAddMenuBtn:ルーム追加`;
     //ボタンのメニュー設定
     const menuBtn = document.getElementById(addBtn);
     //メニューボタンを取得
