@@ -11,7 +11,7 @@ export function setMenuBtn(){
     menuBtns.forEach(menuBtn => {
         //メニューボタンを取得
         const contextMenu = document.getElementById(menuBtn.getAttribute('data-menu'));
-        const menuItems = document.querySelectorAll('.menu-item');
+        //const menuItems = document.querySelectorAll('.menu-item');
         const submenus = document.querySelectorAll('.submenu'); 
         //メニューの位置を調整
 
