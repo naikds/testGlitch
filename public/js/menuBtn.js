@@ -297,7 +297,7 @@ function photonAct(item,btnid){
             break;
         case 'roomCreate':
             inputmenu.querySelector('[data-action="p2Change"]').style.display ='none';
-            const roomCnt = document.getElementById('inputXmenu_ul').childElementCount;
+            const roomCnt = inputmenu.querySelectorAll('.room').length + 1;
             createRoom(`room${roomCnt}`);
             break;
         case 'deckReLoad':
