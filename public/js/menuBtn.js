@@ -80,10 +80,16 @@ export function setAddMenuBtn(addBtn){
     let testCom = `setAddMenuBtn:ルーム追加`;
     //ボタンのメニュー設定
     const menuBtn = document.getElementById(addBtn);
+    if(menuBtn == null) {
+        testCom = `${testCom}null`;
+    } else {
+        testCom = `${testCom}nullじゃない`;
+    }
     //メニューボタンを取得
     const contextMenu = document.getElementById(menuBtn.getAttribute('data-menu'));
     const menuItems = document.querySelectorAll('.menu-item');
     const submenus = document.querySelectorAll('.submenu'); 
+    
     //メニューの位置を調整
 
     //メニューを表示する
