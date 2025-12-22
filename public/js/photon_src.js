@@ -1,7 +1,6 @@
 import {arrangeImages} from './arrange.js';
 import {coinChange} from './other.js';
 import {showModalCardIds} from './modal.js';
-import {setAddMenuBtn} from './menuBtn.js';
 
 //Photonサーバ系
 // Photonサーバの設定
