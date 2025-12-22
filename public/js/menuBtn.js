@@ -3,6 +3,8 @@ import {sendCardInfo,sendDamage,sendplayerInfo,joinRoom,createRoom,sendCardModal
 import {setDeckLoad} from './deckLoad.js';
 import {showModalCardIds} from './modal.js';
 
+const result = document.getElementById('result');
+
 export function setMenuBtn(){
     //ボタンのメニュー設定
     const menuBtns = document.querySelectorAll('.menuBtn');
@@ -75,6 +77,7 @@ export function setMenuBtn(){
 }
 
 export function setAddMenuBtn(addBtn){
+    let testCom = `ルーム追加`;
     //ボタンのメニュー設定
     const menuBtn = document.getElementById(addBtn);
     //メニューボタンを取得
@@ -89,6 +92,7 @@ export function setAddMenuBtn(addBtn){
         e.preventDefault();
         selectItem=null;
         contextMenu.style.display = 'block';
+        testCom = `${testCom}start_` 
     });
 
     //メニューで選ばれた項目の色を変える
@@ -97,6 +101,7 @@ export function setAddMenuBtn(addBtn){
         const touchY = e.changedTouches[0].clientY;
         const touchX = e.changedTouches[0].clientX;
         selectItem=null;
+        testCom = `${testCom}move_` 
         menuItems.forEach(item => {
             item.style.backgroundColor = '';
             const rect = item.getBoundingClientRect();
@@ -128,6 +133,7 @@ export function setAddMenuBtn(addBtn){
     menuBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         preDataSave();
+        testCom = `${testCom}end_` 
         if(selectItem){
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
@@ -141,6 +147,7 @@ export function setAddMenuBtn(addBtn){
         submenus.forEach(sub =>{sub.style.display = 'none';});
         contextMenu.style.display = 'none';
     });
+    result.innerHTML = testCom;
 }
 
 //メニューボタン処理
