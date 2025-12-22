@@ -98,7 +98,8 @@ export function setAddMenuBtn(addBtn){
         e.preventDefault();
         selectItem=null;
         contextMenu.style.display = 'block';
-        testCom = `${testCom}start_` 
+        testCom = `start_` 
+        result.innerHTML = testCom;
     });
 
     //メニューで選ばれた項目の色を変える
@@ -107,7 +108,8 @@ export function setAddMenuBtn(addBtn){
         const touchY = e.changedTouches[0].clientY;
         const touchX = e.changedTouches[0].clientX;
         selectItem=null;
-        testCom = `${testCom}move_` 
+        testCom = `touchmove` 
+        result.innerHTML = testCom;
         menuItems.forEach(item => {
             item.style.backgroundColor = '';
             const rect = item.getBoundingClientRect();
@@ -139,7 +141,8 @@ export function setAddMenuBtn(addBtn){
     menuBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         preDataSave();
-        testCom = `${testCom}end_` 
+        testCom = `touchend` 
+        result.innerHTML = testCom;
         if(selectItem){
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
