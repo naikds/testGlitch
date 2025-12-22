@@ -73,9 +73,11 @@ client.onRoomListUpdate = function(rooms){
   if(!rooms){return;}
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
+    clone.querySelector('.submenu-item').id = room.name;
     clone.querySelector('.submenu-item').dataset.xnum = room.name;
     clone.querySelector('.submenu-item').textContent = room.name;
     inputXmenu_ul.appendChild(clone);
+    setAddMenuBtn(room.name);
   })
 }
 
