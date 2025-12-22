@@ -64,6 +64,7 @@ client.onRoomList = function(rooms){
     clone.querySelector('.submenu-item').textContent = room.name;
     inputXmenu_ul.appendChild(clone);
     setAddMenuBtn(room.name);
+    result.innerHTML = `ルーム追加: ${room.name}`;
   })
 }
 client.onRoomListUpdate = function(rooms){
