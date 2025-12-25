@@ -200,6 +200,13 @@ function fieldUpAct(item, btnid){
             moveAllCard('hand', 'deck', false);
             moveCard('deck', 'hand', sideCount, true, false);
             break;
+        //ジャッジマンを使う
+        case 'jaji-man':
+            //手札を山札に→シャッフルして4枚ドロー
+            moveAllCard('hand', 'deck', false);
+            shufflDeck();
+            moveCard('deck', 'hand', 4, true, false);
+            break;jaji-man
         //博士の研究を使う
         case 'ha-kase':
             //手札をトラッシュして山札から7枚引く
