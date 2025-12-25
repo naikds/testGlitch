@@ -159,9 +159,14 @@ function fieldUpAct(item, btnid){
         case 'hand_trash':
             moveAllCard('hand', 'trash', false);
             break;
-        //手札を下に戻す
+        //手札をデッキ下に戻す
+        case 'hand_deck_under':
+            moveAllCard('hand', 'deck', false);
+            break;
+        //手札をデッキに戻してシャッフル
         case 'hand_deck':
             moveAllCard('hand', 'deck', false);
+            shufflDeck();
             break;
         //フリーをトラッシュ
         case 'free_trash':
