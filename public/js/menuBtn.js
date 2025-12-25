@@ -105,6 +105,10 @@ function fieldUpAct(item, btnid){
         case 'side_draw2':
             moveCard('side', 'hand', 2, false, false);
             break;
+        //サイドを3枚引く
+        case 'side_draw3':
+            moveCard('side', 'hand', 3, false, false);
+            break;
         //初期配置
         case 'reset':
             const cards = document.querySelectorAll('.card');
