@@ -23,7 +23,7 @@ export function setMenuBtn(){
             selectItem=null;
             contextMenu.style.display = 'block';
             isDown = true;
-            target.setPointerCapture(e.pointerId);
+            e.target.setPointerCapture(e.pointerId);
         });
 
         //メニューで選ばれた項目の色を変える
