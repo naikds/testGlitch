@@ -109,12 +109,14 @@ export function setField(){
     }else{
       menu.style.left = `${menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg)}px`
     }
+    menu.style.left = `${menu.style.left / window.innerWidth}%`
     
     if(menuTop == 't'){
       menu.style.top = `${menuPr.offsetTop * Number(menuTopmg)}px`
     }else{
       menu.style.top = `${menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg)}px`
     }
+    menu.style.top = `${menu.style.top / window.innerHeight}%`
     
     menu.style.display = 'none';
   });
