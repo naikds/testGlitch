@@ -584,7 +584,7 @@ body {
 
 .inputText{
   font-size:16px;
-  transform:scale(0.75);
+    width: 40%;
   transform-origin: 0 0;
 }
 
@@ -593,4 +593,5 @@ body {
     border: 1px solid red;
     background :white;
     margin-right: 2%;
+    margin-left: 2%;
 }
