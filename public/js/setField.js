@@ -121,3 +121,31 @@ export function setField(){
   });
   
 }
+
+//menuBtnの配置を調整
+export function setmenuBtn(){
+  document.querySelectorAll('.menu').forEach(menu => {
+    const menuPr = document.getElementById(menu.dataset.pr);
+    const menuLf = menu.dataset.lf;
+    const menuLfmg = menu.dataset.lfmg;
+    const menuTop = menu.dataset.top;
+    const menuTopmg = menu.dataset.topmg;
+    const mainDiv = document.getElementById('container');
+    
+    menu.style.display = 'block';
+    
+    if(menuLf == 'l'){
+      menu.style.left = `${((menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
+    }else{
+      menu.style.left = `${((menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
+    }
+    
+    if(menuTop == 't'){
+      menu.style.top = `${((menuPr.offsetTop * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
+    }else{
+      menu.style.top = `${((menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
+    }
+    
+    menu.style.display = 'none';
+  });
+}
