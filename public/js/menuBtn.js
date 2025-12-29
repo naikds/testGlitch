@@ -22,6 +22,7 @@ export function setMenuBtn(){
             e.preventDefault();
             selectItem=null;
             contextMenu.style.display = 'block';
+            isDown = true;
         });
 
         //メニューで選ばれた項目の色を変える
