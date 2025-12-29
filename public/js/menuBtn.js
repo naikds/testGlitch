@@ -17,14 +17,14 @@ export function setMenuBtn(){
 
         //メニューを表示する
         let selectItem=null;
-        menuBtn.addEventListener('touchstart', (e) => {
+        menuBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             selectItem=null;
             contextMenu.style.display = 'block';
         });
 
         //メニューで選ばれた項目の色を変える
-        menuBtn.addEventListener('touchmove', (e) => {
+        menuBtn.addEventListener('pointermove', (e) => {
             e.preventDefault();
             const touchY = e.changedTouches[0].clientY;
             const touchX = e.changedTouches[0].clientX;
@@ -58,7 +58,7 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の処理を実行する
-        menuBtn.addEventListener('touchend', (e) => {
+        menuBtn.addEventListener('pointerup', (e) => {
             e.preventDefault();
             preDataSave();
             if(selectItem){
