@@ -55,7 +55,7 @@ export function setMenuBtn(){
             if(selectItem != null){
                 selectItem.style.backgroundColor = '#0078d4';
                 if(selectItem.classList.contains('menuBtnMenu')){
-                    //btnAct(selectItem, e.target.id);
+                    btnAct(selectItem, e.target.id);
                 }else if(!selectItem.classList.contains('submenu-item')){
                     submenus.forEach(sub =>{sub.style.display = 'none';});
                 }
@@ -73,7 +73,7 @@ export function setMenuBtn(){
                 
                 const rect = selectItem.getBoundingClientRect();
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
-                    //btnAct(selectItem, e.target.id);
+                    btnAct(selectItem, e.target.id);
                 }
             }
 
