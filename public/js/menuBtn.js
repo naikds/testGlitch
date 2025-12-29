@@ -26,7 +26,7 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の色を変える
-        contextMenu.addEventListener('pointermove', (e) => {
+        menuBtn.addEventListener('pointermove', (e) => {
             if(!isDown) return;
             e.preventDefault();
             const touchY = e.clientY;
@@ -62,7 +62,7 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の処理を実行する
-        contextMenu.addEventListener('pointerup', (e) => {
+        menuBtn.addEventListener('pointerup', (e) => {
             isDown = false;
             e.preventDefault();
             preDataSave();
