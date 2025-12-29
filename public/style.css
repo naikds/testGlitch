@@ -584,13 +584,14 @@ body {
 
 .inputText{
   font-size:16px;
-  transform:scale(0.75);
   transform-origin: 0 0;
+  width:35%;
 }
 
 .submitBtn{
-    width: 16.5%;
+    width: 15%;
     border: 1px solid red;
     background :white;
     margin-right: 2%;
+    margin-left: 2%;
 }
