@@ -17,7 +17,7 @@ export function setMenuBtn(){
 
         //メニューを表示する
         let selectItem=null;
-        menuBtn.addEventListener('touchstart', (e) => {
+        menuBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             selectItem=null;
             contextMenu.style.display = 'block';
