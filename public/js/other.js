@@ -16,7 +16,7 @@ export function setOther(){
 
     //コイン処理
     const coin = document.getElementById('coin');
-    coin.addEventListener('touchend', (e) => {
+    coin.addEventListener('pointerup', (e) => {
         let coinOU = 2;
         if (Math.random() > 0.5) {
           coinOU = 1;
@@ -28,7 +28,7 @@ export function setOther(){
   
     //p2入れ替え処理
     const p2change = document.getElementById('btnChangePl');
-    p2change.addEventListener('touchend', (e) => {
+    p2change.addEventListener('pointerup', (e) => {
       if(p1DeckCode==""){p1DeckCode=document.getElementById('urlInput').value;}
       if(document.getElementById('urlInput').value==p1DeckCode){
         document.getElementById('urlInput').value=p2DeckCode;
