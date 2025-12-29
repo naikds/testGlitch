@@ -3,7 +3,7 @@ import {setDeckLoad} from './deckLoad.js';
 import {setMenuBtn} from './menuBtn.js';
 import {setModal} from './modal.js';
 import {setOther} from './other.js';
-import {setField} from './setField.js';
+import {setField,setmenuBtn} from './setField.js';
 import {reConnect} from './photon_src.js'
 
 //初期読み込みstart
@@ -25,3 +25,14 @@ document.addEventListener('touchend', function(event) {
     }
     lastTouchEnd = now;
 }, false);
+
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(() => {
+    console.log("リサイズ完了！");
+    setmenuBtn();
+  }, 200);
+});
