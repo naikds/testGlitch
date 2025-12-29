@@ -8,7 +8,7 @@ export function setCardDrag(){
   const draggables = document.querySelectorAll('.draggable');
   draggables.forEach(draggable => {
     //ドラッグ開始
-    draggable.addEventListener('touchstart', (e) => {
+    draggable.addEventListener('pointerdown', (e) => {
       if(!e.target.classList.contains('draggable')){return;}
       preDataSave();
       const touch = e.targetTouches[0];
@@ -24,7 +24,7 @@ export function setCardDrag(){
     });
 
     //ドラッグ中
-    draggable.addEventListener('touchmove', (e) => {
+    draggable.addEventListener('pointermove', (e) => {
       e.preventDefault();
       const touch = Array.from(e.changedTouches).find(t => t.identifier == e.target.dataset.touchId);
       if (touch) {
@@ -34,7 +34,7 @@ export function setCardDrag(){
     });
 
     //ドラッグ終わり
-    draggable.addEventListener('touchend', (e) => {
+    draggable.addEventListener('pointerup', (e) => {
       const touch = Array.from(e.changedTouches).find(t => t.identifier == e.target.dataset.touchId);
       const target = e.target
       document.getElementById(target.dataset.moto).appendChild(target);
