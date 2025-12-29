@@ -16,7 +16,7 @@ export function setOther(){
 
     //コイン処理
     const coin = document.getElementById('coin');
-    coin.addEventListener('touchend', (e) => {
+    coin.addEventListener('pointerup', (e) => {
         let coinOU = 2;
         if (Math.random() > 0.5) {
           coinOU = 1;
