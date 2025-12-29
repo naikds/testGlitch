@@ -11,14 +11,13 @@ export function setCardDrag(){
     draggable.addEventListener('pointerdown', (e) => {
       if(!e.target.classList.contains('draggable')){return;}
       preDataSave();
-      const touch = e.targetTouches[0];
-      e.target.dataset.touchId = touch.identifier;
+      e.target.dataset.pointerId = e.pointerId;
       e.target.dataset.moto = e.target.offsetParent.id;
       e.target.dataset.handIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
       document.getElementById('container').appendChild(e.target);
       e.target.style.position = 'absolute';
-      e.target.style.left = `${touch.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
-      e.target.style.top = `${touch.clientY - e.target.offsetHeight / 2 - e.target.offsetParent.offsetTop + window.scrollY}px`;
+      e.target.style.left = `${e.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
+      e.target.style.top = `${e.clientY - e.target.offsetHeight / 2 - e.target.offsetParent.offsetTop + window.scrollY}px`;
       e.target.style.zIndex = 1000;
       event.preventDefault();
     });
@@ -26,23 +25,21 @@ export function setCardDrag(){
     //ドラッグ中
     draggable.addEventListener('pointermove', (e) => {
       e.preventDefault();
-      const touch = Array.from(e.changedTouches).find(t => t.identifier == e.target.dataset.touchId);
-      if (touch) {
-        e.target.style.left = `${touch.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
-        e.target.style.top = `${touch.clientY - e.target.offsetHeight / 2 - e.target.offsetParent.offsetTop + window.scrollY}px`;
+      if (e.pointerId == e.target.dataset.pointerId) {
+        e.target.style.left = `${e.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
+        e.target.style.top = `${e.clientY - e.target.offsetHeight / 2 - e.target.offsetParent.offsetTop + window.scrollY}px`;
       }
     });
 
     //ドラッグ終わり
-    draggable.addEventListener('pointerup', (e) => {
-      const touch = Array.from(e.changedTouches).find(t => t.identifier == e.target.dataset.touchId);
+    draggable.addEventListener('pointerup', (e) => 
       const target = e.target
       document.getElementById(target.dataset.moto).appendChild(target);
-      if (touch) {
+      if (e.pointerId == e.target.dataset.pointerId) {
         draggables.forEach(c => {c.style.visibility = 'hidden';});
         const noPoints = document.querySelectorAll('.nonMousePointer');
         noPoints.forEach(p=>{p.classList.remove('nonMousePointer');})
-        const dropzone = document.elementFromPoint(touch.clientX, touch.clientY).closest('.dropzone');
+        const dropzone = document.elementFromPoint(e.clientX, e.clientY).closest('.dropzone');
         noPoints.forEach(p=>{p.classList.add('nonMousePointer');})
         draggables.forEach(c => {c.style.visibility = '';})
         if (dropzone) {
@@ -67,7 +64,7 @@ export function setCardDrag(){
       }
       target.style.position = '';
       target.style.zIndex = '';
-      delete target.dataset.touchId;
+      delete target.dataset.pointerId;
       arrangeImages();
       sendCardInfo();
       delete target.dataset.moto;
