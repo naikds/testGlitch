@@ -106,15 +106,15 @@ export function setField(){
     menu.style.display = 'block';
     
     if(menuLf == 'l'){
-      menu.style.left = `${(menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/mainDiv.width}%`
+      menu.style.left = `${((menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
     }else{
-      menu.style.left = `${(menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/mainDiv.width}%`
+      menu.style.left = `${((menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
     }
     
     if(menuTop == 't'){
-      menu.style.top = `${(menuPr.offsetTop * Number(menuTopmg))/mainDiv.height}%`
+      menu.style.top = `${((menuPr.offsetTop * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
     }else{
-      menu.style.top = `${(menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/mainDiv.height}%`
+      menu.style.top = `${((menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
     }
     
     menu.style.display = 'none';
