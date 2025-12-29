@@ -33,7 +33,7 @@ export function setCardDrag(){
 
     //ドラッグ終わり
     draggable.addEventListener('pointerup', (e) => 
-      const target = e.target
+      const target = e.target;
       document.getElementById(target.dataset.moto).appendChild(target);
       if (e.pointerId == e.target.dataset.pointerId) {
         draggables.forEach(c => {c.style.visibility = 'hidden';});
