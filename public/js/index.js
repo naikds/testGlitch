@@ -8,6 +8,10 @@ import {reConnect} from './photon_src.js'
 
 //初期読み込みstart
 document.addEventListener('DOMContentLoaded', (event) => {
+  if(window.innerWidth > window.innerHeight){
+    alert(`PCで開いている場合、ブラウザのフルスクリーンをやめ、
+    サイズを縦長にしてください`)
+  }
   setField();
   setCardDrag();
   setModal();
