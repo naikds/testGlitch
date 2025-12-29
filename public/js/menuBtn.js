@@ -26,7 +26,7 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の色を変える
-        menuBtn.addEventListener('pointermove', (e) => {
+        contextMenu.addEventListener('pointermove', (e) => {
             if(!isDown) return;
             e.preventDefault();
             const touchY = e.clientY;
@@ -36,7 +36,8 @@ export function setMenuBtn(){
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
                 const rect = item.getBoundingClientRect();
-
+                
+                console.log("clientY:", e.clientY, "rect:", rect.top, rect.bottom);
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
                     //複数重なっていた場合サブメニュー優先
                     if(selectItem == null) selectItem = item;
@@ -61,7 +62,7 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の処理を実行する
-        menuBtn.addEventListener('pointerup', (e) => {
+        contextMenu.addEventListener('pointerup', (e) => {
             isDown = false;
             e.preventDefault();
             preDataSave();
