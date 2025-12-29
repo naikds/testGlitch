@@ -26,8 +26,8 @@ export function setMenuBtn(){
         //メニューで選ばれた項目の色を変える
         menuBtn.addEventListener('pointermove', (e) => {
             e.preventDefault();
-            const touchY = e.changedTouches[0].clientY;
-            const touchX = e.changedTouches[0].clientX;
+            const touchY = e.clientY;
+            const touchX = e.clientX;
             selectItem=null;
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => {
@@ -62,8 +62,8 @@ export function setMenuBtn(){
             e.preventDefault();
             preDataSave();
             if(selectItem){
-                const touchY = e.changedTouches[0].clientY;
-                const touchX = e.changedTouches[0].clientX;
+                const touchY = e.clientY;
+                const touchX = e.clientX;
                 
                 const rect = selectItem.getBoundingClientRect();
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
