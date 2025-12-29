@@ -589,10 +589,7 @@ body {
 }
 
 .submitBtn{
-    position: absolute;
-    width: 9.5%;
-    height: 68%;
-    left :41%;
+    width: 16.5%;
     border: 1px solid red;
     background :white;
     margin-right: 2%;
