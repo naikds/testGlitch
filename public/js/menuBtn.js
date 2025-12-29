@@ -28,8 +28,8 @@ export function setMenuBtn(){
         menuBtn.addEventListener('pointermove', (e) => {
             if(!isDown) return;
             e.preventDefault();
-            const touchY = e..clientY;
-            const touchX = e..clientX;
+            const touchY = e.clientY;
+            const touchX = e.clientX;
             selectItem=null;
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => {
