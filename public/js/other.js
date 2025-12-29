@@ -28,7 +28,7 @@ export function setOther(){
   
     //p2入れ替え処理
     const p2change = document.getElementById('btnChangePl');
-    p2change.addEventListener('touchend', (e) => {
+    p2change.addEventListener('pointerup', (e) => {
       if(p1DeckCode==""){p1DeckCode=document.getElementById('urlInput').value;}
       if(document.getElementById('urlInput').value==p1DeckCode){
         document.getElementById('urlInput').value=p2DeckCode;
