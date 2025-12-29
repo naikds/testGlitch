@@ -101,19 +101,20 @@ export function setField(){
     const menuLfmg = menu.dataset.lfmg;
     const menuTop = menu.dataset.top;
     const menuTopmg = menu.dataset.topmg;
+    const mainDiv = document.getElementById('container');
     
     menu.style.display = 'block';
     
     if(menuLf == 'l'){
-      menu.style.left = `${(menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/window.innerWidth}%`
+      menu.style.left = `${(menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/mainDiv.width}%`
     }else{
-      menu.style.left = `${(menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/window.innerWidth}%`
+      menu.style.left = `${(menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/mainDiv.width}%`
     }
     
     if(menuTop == 't'){
-      menu.style.top = `${(menuPr.offsetTop * Number(menuTopmg))/window.innerHeight}%`
+      menu.style.top = `${(menuPr.offsetTop * Number(menuTopmg))/mainDiv.height}%`
     }else{
-      menu.style.top = `${(menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/window.innerHeight}%`
+      menu.style.top = `${(menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/mainDiv.height}%`
     }
     
     menu.style.display = 'none';
