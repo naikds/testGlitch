@@ -118,7 +118,7 @@ export function setField(){
     if(menuLf == 'l'){
       leftPx = prLeft + prRect.width *  menuLfmg;
     }else{
-      leftPx = prLeft - prRect.width *  menuLfmg;
+      leftPx = prLeft - menuRect.width *  menuLfmg;
     }
     let topPx;
     if(menuTop == 't'){
