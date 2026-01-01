@@ -97,7 +97,7 @@ export function setField(){
   //menuBtnの配置を調整
   document.querySelectorAll('.menu').forEach(menu => {
     const menuPr = document.getElementById(menu.dataset.pr);
-    const menuLf = Number(menu.dataset.lf;
+    const menuLf = menu.dataset.lf;
     const menuLfmg = Number(menu.dataset.lfmg);
     const menuTop = menu.dataset.top;
     const menuTopmg = Number(menu.dataset.topmg);
