@@ -97,25 +97,38 @@ export function setField(){
   //menuBtnの配置を調整
   document.querySelectorAll('.menu').forEach(menu => {
     const menuPr = document.getElementById(menu.dataset.pr);
-    const menuLf = menu.dataset.lf;
-    const menuLfmg = menu.dataset.lfmg;
+    const menuLf = Number(menu.dataset.lf;
+    const menuLfmg = Number(menu.dataset.lfmg);
     const menuTop = menu.dataset.top;
-    const menuTopmg = menu.dataset.topmg;
+    const menuTopmg = Number(menu.dataset.topmg);
     const mainDiv = document.getElementById('container');
     
     menu.style.display = 'block';
+
+    // --- 絶対座標を取得 ---
+    const prRect = menuPr.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const containerRect = mainDiv.getBoundingClientRect();
     
+    // container 内での相対位置（px）
+    const prLeft = prRect.left - containerRect.left;
+    const prTop = prRect.top - containerRect.top;
+
+    let leftPx;
     if(menuLf == 'l'){
-      menu.style.left = `${((menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
+      leftPx = prLeft + prRect.width *  menuLfmg;
     }else{
-      menu.style.left = `${((menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg))/mainDiv.offsetWidth)*100}%`
+      leftPx = prLeft - prRect.width *  menuLfmg;
+    }
+    let topPx;
+    if(menuTop == 't'){
+      topPx = prTop * menuTopmg;
+    }else{
+      topPx = prTop -menuRect.height * menuTopmg;
     }
     
-    if(menuTop == 't'){
-      menu.style.top = `${((menuPr.offsetTop * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
-    }else{
-      menu.style.top = `${((menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg))/mainDiv.offsetHeight)*100}%`
-    }
+    menu.style.left = `${(leftPx/mainDiv.offsetWidth)*100}%`;
+    menu.style.top = `${(topPx/mainDiv.offsetHeight)*100}%`;
     
     menu.style.display = 'none';
   });
