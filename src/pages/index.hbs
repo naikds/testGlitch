@@ -226,13 +226,6 @@
     <div class="submitBtn menuBtn" id="inputBtn" data-menu="input_menu" ></div>
     <!--ログ-->
     <div class="result" id="result"></div>
-    <div class="menu" id="input_menu"  data-pr="inputBtn" data-lf="l" data-top="b" data-lfmg="1" data-topmg="1">
-      <ul>
-        <li class="menu-item" data-action="deckLoad">デッキ読込み</li>
-        <li class="menu-item menuBtnMenu" data-menu="inputXmenu" data-action="roomJoin">ルームに参加</li>
-        <li class="menu-item" data-action="p2Change">2人回し</li>
-      </ul>
-    </div>
     <template id="inputXmenu_temp">
       <li class="menu-item submenu-item room" data-action="XroomJoin" data-xnum="1">1</li>
     </template>
@@ -243,7 +236,13 @@
       </ul>
     </div>
   </div>
-
+  <div class="menu" id="input_menu"  data-pr="inputBtn" data-lf="l" data-top="b" data-lfmg="1" data-topmg="1">
+  <ul>
+    <li class="menu-item" data-action="deckLoad">デッキ読込み</li>
+    <li class="menu-item menuBtnMenu" data-menu="inputXmenu" data-action="roomJoin">ルームに参加</li>
+    <li class="menu-item" data-action="p2Change">2人回し</li>
+  </ul>
+</div>
 
   <!-- モーダル -->
   <div id="modal" class="modal" data-src="">
