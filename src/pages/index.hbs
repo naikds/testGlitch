@@ -201,7 +201,31 @@
         <li class="menu-item" data-action="p2_trashShow">トラッシュの中身を見る</li>
       </ul>
     </div>
-    
+
+      <!--下部デッキコード入力欄+ボタン-->
+    <div style="display:flex;position:relative;top:97%;">
+      <!--ボタンとテキスト-->
+      <input class="inputText" type="text" id="urlInput" name="url" placeholder="デッキコードを入力" value="RSySM2-nwxITY-yyyyyU" onClick="this.select()">
+      <div class="submitBtn menuBtn" id="inputBtn" data-menu="input_menu" ></div>
+      <!--ログ-->
+      <div class="result" id="result"></div>
+      <template id="inputXmenu_temp">
+        <li class="menu-item submenu-item room" data-action="XroomJoin" data-xnum="1">1</li>
+      </template>
+    </div>
+    <div class="menu" id="input_menu"  data-pr="inputBtn" data-lf="l" data-top="b" data-lfmg="1" data-topmg="1">
+      <ul>
+        <li class="menu-item" data-action="deckLoad">デッキ読込み</li>
+        <li class="menu-item menuBtnMenu" data-menu="inputXmenu" data-action="roomJoin">ルームに参加</li>
+        <li class="menu-item" data-action="p2Change">2人回し</li>
+      </ul>
+    </div>
+    <div class="menu submenu" id="inputXmenu"  data-pr="inputBtn" data-lf="r" data-top="b" data-lfmg="0.3" data-topmg="1">
+      <ul id="inputXmenu_ul">
+        <li class="menu-item submenu-item" data-action="roomReconect">サーバ接続</li>
+        <li class="menu-item submenu-item" data-action="roomCreate">部屋を立てる</li>
+      </ul>
+    </div>
     
     <!--プレイヤー交代ボタン-->
     <div class="btnChangePl" id="btnChangePl" style="visibility:hidden">
@@ -218,32 +242,6 @@
   <div class="p2_cardBox" id="p2_trash"></div>
   <div class="p2_cardBox" id="p2_side"></div>
   <div class="p2_cardBox" id="p2_hand"></div>
-
-  <!--下部デッキコード入力欄+ボタン-->
-  <div style="display:flex;position:relative">
-    <!--ボタンとテキスト-->
-    <input class="inputText" type="text" id="urlInput" name="url" placeholder="デッキコードを入力" onClick="this.select()">
-    <div class="submitBtn menuBtn" id="inputBtn" data-menu="input_menu" ></div>
-    <!--ログ-->
-    <div class="result" id="result"></div>
-    <div class="menu" id="input_menu"  data-pr="inputBtn" data-lf="l" data-top="b" data-lfmg="1" data-topmg="1">
-      <ul>
-        <li class="menu-item" data-action="deckLoad">デッキ読込み</li>
-        <li class="menu-item menuBtnMenu" data-menu="inputXmenu" data-action="roomJoin">ルームに参加</li>
-        <li class="menu-item" data-action="p2Change">2人回し</li>
-      </ul>
-    </div>
-    <template id="inputXmenu_temp">
-      <li class="menu-item submenu-item room" data-action="XroomJoin" data-xnum="1">1</li>
-    </template>
-    <div class="menu submenu" id="inputXmenu"  data-pr="inputBtn" data-lf="r" data-top="b" data-lfmg="1" data-topmg="1">
-      <ul id="inputXmenu_ul">
-        <li class="menu-item submenu-item" data-action="roomReconect">サーバ接続</li>
-        <li class="menu-item submenu-item" data-action="roomCreate">部屋を立てる</li>
-      </ul>
-    </div>
-  </div>
-
 
   <!-- モーダル -->
   <div id="modal" class="modal" data-src="">

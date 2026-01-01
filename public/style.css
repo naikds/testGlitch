@@ -402,6 +402,10 @@ body {
     z-index: 1000;
 }
 
+.menuBtn{
+    touch-action: none;
+}
+
 .menu ul {
     list-style: none;
     padding: 10px;
@@ -453,7 +457,6 @@ body {
     background :white;
     margin-right: 2%;
 }
-
 
 /*ダメカン情報*/
 /*自分のダメカン*/

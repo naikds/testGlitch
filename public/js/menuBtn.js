@@ -17,23 +17,26 @@ export function setMenuBtn(){
 
         //メニューを表示する
         let selectItem=null;
-        menuBtn.addEventListener('touchstart', (e) => {
+        let isDown = false;
+        menuBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             selectItem=null;
             contextMenu.style.display = 'block';
+            isDown = true;
+            e.target.setPointerCapture(e.pointerId);
         });
 
         //メニューで選ばれた項目の色を変える
-        menuBtn.addEventListener('touchmove', (e) => {
+        menuBtn.addEventListener('pointermove', (e) => {
+            if(!isDown) return;
             e.preventDefault();
-            const touchY = e.changedTouches[0].clientY;
-            const touchX = e.changedTouches[0].clientX;
+            const touchY = e.clientY;
+            const touchX = e.clientX;
             selectItem=null;
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => {
                 item.style.backgroundColor = '';
                 const rect = item.getBoundingClientRect();
-
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {
                     //複数重なっていた場合サブメニュー優先
                     if(selectItem == null) selectItem = item;
@@ -58,12 +61,13 @@ export function setMenuBtn(){
         });
 
         //メニューで選ばれた項目の処理を実行する
-        menuBtn.addEventListener('touchend', (e) => {
+        menuBtn.addEventListener('pointerup', (e) => {
+            isDown = false;
             e.preventDefault();
             preDataSave();
             if(selectItem){
-                const touchY = e.changedTouches[0].clientY;
-                const touchX = e.changedTouches[0].clientX;
+                const touchY = e.clientY;
+                const touchX = e.clientX;
                 
                 const rect = selectItem.getBoundingClientRect();
                 if (touchY >= rect.top && touchY <= rect.bottom && touchX >= rect.left && touchX <= rect.right) {

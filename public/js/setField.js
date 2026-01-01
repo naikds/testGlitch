@@ -95,28 +95,101 @@ export function setField(){
     }
   
   //menuBtnの配置を調整
+document.querySelectorAll('.menu').forEach(menu => {
+  const menuPr = document.getElementById(menu.dataset.pr);
+  const menuLf = menu.dataset.lf;
+  const menuLfmg = Number(menu.dataset.lfmg);
+  const menuTop = menu.dataset.top;
+  const menuTopmg = Number(menu.dataset.topmg);
+  const mainDiv = document.getElementById('container');
+
+  menu.style.display = 'block';
+
+  const prRect = menuPr.getBoundingClientRect();
+  const menuRect = menu.getBoundingClientRect();
+  const containerRect = mainDiv.getBoundingClientRect();
+
+  // container 内の相対座標（px）
+  let prLeft = prRect.left - containerRect.left;
+  let prTop = prRect.top - containerRect.top;
+
+  // --- 横方向（left） ---
+  let leftPx;
+  if (menuLf === 'l') {
+    // 右側に出す
+    leftPx = prLeft + prRect.width * menuLfmg;
+  } else {
+    // 左側に出す
+    leftPx = prLeft - menuRect.width * menuLfmg;
+  }
+
+  // --- 縦方向（top） ---
+  let topPx;
+  if (menuTop === 't') {
+    topPx = prTop * menuTopmg;
+  } else {
+    topPx = prTop - menuRect.height * menuTopmg;
+  }
+
+  // --- container 内に収める（境界吸着） ---
+  leftPx = Math.max(0, Math.min(leftPx, mainDiv.offsetWidth - menuRect.width));
+  topPx  = Math.max(0, Math.min(topPx, mainDiv.offsetHeight - menuRect.height));
+
+  // --- % に変換 ---
+  menu.style.left = `${(leftPx / mainDiv.offsetWidth) * 100}%`;
+  menu.style.top = `${(topPx / mainDiv.offsetHeight) * 100}%`;
+
+  menu.style.display = 'none';
+});
+  
+}
+
+//menuBtnの配置を調整
+export function setmenuBtn(){
   document.querySelectorAll('.menu').forEach(menu => {
     const menuPr = document.getElementById(menu.dataset.pr);
     const menuLf = menu.dataset.lf;
-    const menuLfmg = menu.dataset.lfmg;
+    const menuLfmg = Number(menu.dataset.lfmg);
     const menuTop = menu.dataset.top;
-    const menuTopmg = menu.dataset.topmg;
-    
+    const menuTopmg = Number(menu.dataset.topmg);
+    const mainDiv = document.getElementById('container');
+  
     menu.style.display = 'block';
-    
-    if(menuLf == 'l'){
-      menu.style.left = `${menuPr.offsetLeft + menuPr.offsetWidth * Number(menuLfmg)}px`
-    }else{
-      menu.style.left = `${menuPr.offsetLeft - menu.offsetWidth * Number(menuLfmg)}px`
+  
+    const prRect = menuPr.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const containerRect = mainDiv.getBoundingClientRect();
+  
+    // container 内の相対座標（px）
+    let prLeft = prRect.left - containerRect.left;
+    let prTop = prRect.top - containerRect.top;
+  
+    // --- 横方向（left） ---
+    let leftPx;
+    if (menuLf === 'l') {
+      // 右側に出す
+      leftPx = prLeft + prRect.width * menuLfmg;
+    } else {
+      // 左側に出す
+      leftPx = prLeft - menuRect.width * menuLfmg;
     }
-    
-    if(menuTop == 't'){
-      menu.style.top = `${menuPr.offsetTop * Number(menuTopmg)}px`
-    }else{
-      menu.style.top = `${menuPr.offsetTop - menu.offsetHeight * Number(menuTopmg)}px`
+  
+    // --- 縦方向（top） ---
+    let topPx;
+    if (menuTop === 't') {
+      topPx = prTop * menuTopmg;
+    } else {
+      topPx = prTop - menuRect.height * menuTopmg;
     }
-    
+  
+    // --- container 内に収める（境界吸着） ---
+    leftPx = Math.max(0, Math.min(leftPx, mainDiv.offsetWidth - menuRect.width));
+    topPx  = Math.max(0, Math.min(topPx, mainDiv.offsetHeight - menuRect.height));
+  
+    // --- % に変換 ---
+    menu.style.left = `${(leftPx / mainDiv.offsetWidth) * 100}%`;
+    menu.style.top = `${(topPx / mainDiv.offsetHeight) * 100}%`;
+  
     menu.style.display = 'none';
   });
-  
 }
