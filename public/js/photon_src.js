@@ -34,6 +34,10 @@ client.onJoinRoom = function () {
   sendPhotonMessage(5, "roomJoin"); //全体へルーム参加を通知しカード情報の送信を要求する
   if(isPlayer()){
     sendFirstCardInfo();//カード情報をルーム全体へ送信する
+  }else{
+    //p1とp2を入れ替えるボタンを表示する
+    const p2chbtn = document.getElementById('btnChangePl');
+    p2chbtn.style.visibility = '';
   }
 };
 
