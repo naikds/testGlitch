@@ -10,6 +10,7 @@ const region = 'us'; // 使用するリージョンを設定（例：'us', 'eu',
 
 const result = document.getElementById('result');
 const photonButton = document.getElementById('photonButton');
+const aud_info = document.getElementById('aud_info');
 
 let roomJoinFlg = '0';
 
@@ -30,8 +31,10 @@ client.onJoinRoom = function () {
   console.log(`Joined room: ${client.myRoom().name}`);
   result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
   roomJoinFlg = '1';
-  sendPhotonMessage(5, "roomJoin");
-  sendFirstCardInfo();
+  sendPhotonMessage(5, "roomJoin"); //全体へルーム参加を通知しカード情報の送信を要求する
+  if(isPlayer()){
+    sendFirstCardInfo();//カード情報をルーム全体へ送信する
+  }
 };
 
 // ルーム作成成功時の処理
@@ -51,11 +54,13 @@ client.onError = function (errorCode, errorMessage) {
 };
 
 //ルーム取得処理
+let roomList;
 client.onRoomList = function(rooms){
   const inputXmenu_ul = document.getElementById('inputXmenu_ul');
   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
   const listItem = document.getElementById('inputXmenu_temp');
   if(!rooms){return;}
+  roomList = rooms;
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
     clone.querySelector('.submenu-item').id = room.name;
@@ -86,18 +91,24 @@ export function createRoom(roomName){
     return;
   }
   if (roomName) {
-    client.createRoom(roomName, { maxPlayers: 2 });
+    client.createRoom(roomName, { maxPlayers: 10 });
     client.joinRoom(roomName);
   }
 }
 
 //ルーム参加処理
 export function joinRoom(roomName){
-  const carddata = document.getElementById('card1').alt;
-  if((carddata == 'card')){
-    result.innerHTML = 'デッキを読み込んで下さい';
-    return;
+  const roomPct = roomList.find(r=>r.name == roomName).playerCount;
+
+  //ルーム内の人数が二人未満ならデッキチェック
+  if(roomPct < 2){
+    const carddata = document.getElementById('card1').alt;
+    if((carddata == 'card')){
+      result.innerHTML = 'デッキを読み込んで下さい';
+      return;
+    }
   }
+  
   if (roomName) {
     client.connectToRegionMaster(region);
     client.joinRoom(roomName);
@@ -108,6 +119,20 @@ export function reConnect(){
   client.connectToRegionMaster(region);
 }
 
+function computeRoles() {
+  const room = client.myRoom();
+  if (!room || !room.actors) return { isPlayer: false, playerActorNrs: [] };
+  const actors = Object.values(room.actors); // Photon.LoadBalancing.Actorの配列化
+  actors.sort((a, b) => a.actorNr - b.actorNr);
+  const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
+  const myNr = client.myActor().actorNr;
+  const isPlayer = playerActorNrs.includes(myNr);
+  return { isPlayer, playerActorNrs };
+}
+
+function isPlayer() {
+  return computeRoles().isPlayer;
+}
 
 //メッセージ送信
 export function sendPhotonMessage(code, message) {
@@ -130,19 +155,19 @@ client.onEvent = function (code, content, actorNr) {
 
   if (code === 3) {
     //カードの内容を反映
-    setFirstCardInfo(content);
+    setFirstCardInfo(content,actorNr);
   }
   
   if(code === 7){
-    setCardInfo(content);
+    setCardInfo(content,actorNr);
   }
   
   if(code === 9){
-    setDamage(content);
+    setDamage(content,actorNr);
   }
   
   if(code === 11){
-    setplayerInfo(content);
+    setplayerInfo(content,actorNr);
   }
   
   if(code === 13){
@@ -154,6 +179,14 @@ client.onEvent = function (code, content, actorNr) {
   }
 };
 
+function plTxt(actorNo){
+  let plTxt ='p2_';
+  if(!isPlayer()){
+    plTxt = (actorNo === aud_info.dataset.prNo)?'':'p2_';
+  }
+  return plTxt;
+}
+
 //最初カードの情報を送信（src込み）
 export function sendFirstCardInfo() {
   const cards = document.querySelectorAll('img.card');
@@ -162,16 +195,17 @@ export function sendFirstCardInfo() {
   sendPhotonMessage(3, srcList.join(','));
 }
 
-function setFirstCardInfo(info) {
+function setFirstCardInfo(info,actorNo) {
   const imgdata = info.split(',');
+
   imgdata.forEach(data=>{
     const datasrc = data.split('@');
-    const p2img = document.getElementById('p2_' + datasrc[0])
-    const p2pare=document.getElementById('p2_deck');
-    p2img.src = datasrc[1];
-    p2img.classList.add(datasrc[2]);
-    p2img.classList.remove('draggable');
-    p2pare.appendChild(p2img);
+    const img = document.getElementById(plTxt(actorNo) + datasrc[0])
+    const pare=document.getElementById(plTxt(actorNo) + 'deck');
+    img.src = datasrc[1];
+    img.classList.add(datasrc[2]);
+    img.classList.remove('draggable');
+    pare.appendChild(img);
   })
 }
 
@@ -184,10 +218,10 @@ export function sendCardInfo(){
   
 }
 
-function setCardInfo(info){
-  const cards = document.querySelectorAll('.p2_cardBox .p2_card');
+function setCardInfo(info,actorNo){
+  const cards = document.querySelectorAll(`.${plTxt(actorNo)}cardBox .${plTxt(actorNo)}card`);
   cards.forEach(card=>{
-    document.getElementById('p2_deck').appendChild(card);
+    document.getElementById(`${plTxt(actorNo)}deck`).appendChild(card);
   });
    result.innerHTML = info;
   const regex= /(\d+)([a-zA-Z])/g;
@@ -198,8 +232,8 @@ function setCardInfo(info){
     matches.push({num:match[1],let:match[2]});
   }
   matches.forEach(data=>{
-    const p2img = document.getElementById('p2_card' + data.num);
-    const p2pare=document.getElementById('p2_' + getCardBoxNm(data.let));
+    const p2img = document.getElementById(plTxt(actorNo) + 'card' + data.num);
+    const p2pare=document.getElementById(plTxt(actorNo)+ getCardBoxNm(data.let));
     p2pare.appendChild(p2img);
   })
   result.innerHTML = "カード受信";
@@ -214,11 +248,11 @@ export function sendDamage(){
   sendPhotonMessage(9, srcList.join(','));
 }
 
-function setDamage(info){
+function setDamage(info,actorNo){
   const damageData = info.split(',');
   damageData.forEach(data=>{
     const datasrc = data.split('@');
-    const p2damage = document.getElementById('p2_' + datasrc[0]);
+    const p2damage = document.getElementById(plTxt(actorNo) + datasrc[0]);
     p2damage.textContent = datasrc[1];
   })
 }
@@ -231,8 +265,9 @@ export function sendplayerInfo(){
   sendPhotonMessage(11, `敵　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`);
 }
 
-function setplayerInfo(info){
-  const p2info = document.getElementById('p2Info');
+function setplayerInfo(info,actorNo){
+  let pltxt = (plTxt(actorNo) === '')?'p1':'p2'
+  const p2info = document.getElementById(pltxt+'Info');
   p2info.textContent = info;
 }
 
@@ -251,7 +286,9 @@ export function sendCardModal(cardIds){
 }
 
 function showCardModal(cardIds){
-  showModalCardIds(cardIds);
+  if(isPlayer()){
+    showModalCardIds(cardIds);
+  }
 }
 
 //Photn用の関数
