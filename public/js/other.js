@@ -42,7 +42,7 @@ export function setOther(){
       
       changeDamage();
       arrangeImages();
-      
+      document.getElementById('aud_info').dataset.prNo = (document.getElementById('aud_info').dataset.prNo === '1')?'2':'1';
     });
 }
 
