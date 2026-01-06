@@ -1,6 +1,4 @@
 import {arrangeImages,preDataSave} from './arrange.js';
-import {sendCardInfo,sendplayerInfo} from './photon_src.js';
-
 export function setCardDrag(){
   const handCardWidth = 0.7;
   
@@ -69,7 +67,6 @@ export function setCardDrag(){
       target.style.zIndex = '';
       delete target.dataset.touchId;
       arrangeImages();
-      sendCardInfo();
       delete target.dataset.moto;
     });
   });
