@@ -186,7 +186,7 @@ client.onEvent = function (code, content, actorNr) {
 function plTxt(actorNo){
   let plTxt ='p2_';
   if(!isPlayer()){
-    plTxt = (actorNo === aud_info.dataset.prNo)?'':'p2_';
+    plTxt = (String(actorNo) === aud_info.dataset.prNo)?'':'p2_';
   }
   return plTxt;
 }
