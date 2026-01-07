@@ -141,7 +141,8 @@ function isPlayer() {
 
 //メッセージ送信
 export function sendPhotonMessage(code, message) {
-  if (message && roomJoinFlg === '1' && isPlayer()) {
+  //基本プレイヤーのみ送信、デッキ送信要求（code=5の場合）のみ非プレイヤーでも可
+  if (message && roomJoinFlg === '1' && (isPlayer() || (!isPlayer() && code === '5'))) {
     client.raiseEvent(code, message); // イベントコード1でメッセージ送信
   }
 }
