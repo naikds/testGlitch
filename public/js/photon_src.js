@@ -141,7 +141,7 @@ function isPlayer() {
 
 //メッセージ送信
 export function sendPhotonMessage(code, message) {
-  if (message && roomJoinFlg === '1') {
+  if (message && roomJoinFlg === '1' && isPlayer()) {
     client.raiseEvent(code, message); // イベントコード1でメッセージ送信
   }
 }
