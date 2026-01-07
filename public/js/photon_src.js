@@ -259,7 +259,11 @@ function setDamage(info,actorNo){
   damageData.forEach(data=>{
     const datasrc = data.split('@');
     const p2damage = document.getElementById(plTxt(actorNo) + datasrc[0]);
-    p2damage.textContent = datasrc[1];
+    if(plTxt(actorNo) === ''){
+      p2damage.value=datasrc[1];
+    }else{
+      p2damage.textContent = datasrc[1];
+    }
   })
 }
 
