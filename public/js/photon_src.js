@@ -213,6 +213,8 @@ function setFirstCardInfo(info,actorNo) {
     img.classList.remove('draggable');
     pare.appendChild(img);
   })
+
+  arrangeImages();
 }
 
 //カードの情報を送信
