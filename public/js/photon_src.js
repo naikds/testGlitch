@@ -325,50 +325,29 @@ function getTagName(card){
   return '';
 }
 
-function getCardBoxNm(id){
-  if(id == "deck"){return "a";}
-  if(id == "a"){return "deck";}
-  
-  if(id == "hand"){return "b";}
-  if(id == "b"){return "hand";}
-  
-  if(id == "trash"){return "c";}
-  if(id == "c"){return "trash";}
-  
-  if(id == "battle"){return "d";}
-  if(id == "d"){return "battle";}
-  
-  if(id == "free"){return "e";}
-  if(id == "e"){return "free";}
-  
-  if(id == "stadium"){return "f";}
-  if(id == "f"){return "stadium";}
-  
-  if(id == "side"){return "g";}
-  if(id == "g"){return "side";}
-  
-  if(id == "bench1"){return "h";}
-  if(id == "h"){return "bench1";}
-  
-  if(id == "bench2"){return "i";}
-  if(id == "i"){return "bench2";}
-  
-  if(id == "bench3"){return "j";}
-  if(id == "j"){return "bench3";}
-  
-  if(id == "bench4"){return "k";}
-  if(id == "k"){return "bench4";}
-  
-  if(id == "bench5"){return "l";}
-  if(id == "l"){return "bench5";}
-  
-  if(id == "bench6"){return "m";}
-  if(id == "m"){return "bench6";}
-  
-  if(id == "bench7"){return "n";}
-  if(id == "n"){return "bench7";}
-  
-  if(id == "bench8"){return "o";}
-  if(id == "o"){return "bench8";}
-  
+
+const nameToCode = {
+  deck: "a",
+  hand: "b",
+  trash: "c",
+  battle: "d",
+  free: "e",
+  stadium: "f",
+  side: "g",
+  bench1: "h",
+  bench2: "i",
+  bench3: "j",
+  bench4: "k",
+  bench5: "l",
+  bench6: "m",
+  bench7: "n",
+  bench8: "o",
+};
+
+const codeToName = Object.fromEntries(
+  Object.entries(nameToCode).map(([name, code]) => [code, name])
+);
+
+function getCardBoxNm(key) {
+  return nameToCode[key] ?? codeToName[key] ?? undefined;
 }
