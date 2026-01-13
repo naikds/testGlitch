@@ -1,6 +1,6 @@
 
 import { arrangeImages, preDataSave } from './arrange.js';
-import { sendCardInfo, sendplayerInfo } from './photon_src.js';
+import {setBoardInfo } from './photon_src.js';
 
 export function setCardDrag() {
   const handCardWidth = 0.7;
@@ -109,7 +109,7 @@ export function setCardDrag() {
 
     // 後処理
     arrangeImages();
-    sendCardInfo();
+    setBoardInfo();
   }
 
   document.addEventListener('pointerup', (e) => {

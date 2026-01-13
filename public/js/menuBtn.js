@@ -1,5 +1,5 @@
 import {arrangeImages,preDataSave,handScSave} from './arrange.js';
-import {sendCardInfo,sendDamage,sendplayerInfo,joinRoom,createRoom,sendCardModal,reConnect} from './photon_src.js';
+import {setBoardInfo,joinRoom,createRoom,sendCardModal,reConnect} from './photon_src.js';
 import {setDeckLoad} from './deckLoad.js';
 import {showModalCardIds} from './modal.js';
 
@@ -124,7 +124,7 @@ function fieldUpAct(item, btnid){
 
             damages.forEach(d => { d.value = '0' });//ダメカンをリセット
             arrangeImages();
-            sendCardInfo();
+            setBoardInfo();
             break;
         //ポケモン入れ替え
         case 'irekae':
@@ -145,8 +145,7 @@ function fieldUpAct(item, btnid){
 
             damagebench.value = damagebatleV;
             damagebatle.value = damagebenchV;
-            sendCardInfo();
-            sendDamage();
+            setBoardInfo();
             break;
         //ベンチをトラッシュ
         case 'bench_trash':
@@ -226,8 +225,7 @@ function fieldUpAct(item, btnid){
           return;
     }
     arrangeImages();
-    sendCardInfo();
-    sendDamage();
+    setBoardInfo();
 }
 
 //単にメニュー開くだけとか

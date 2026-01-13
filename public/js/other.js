@@ -1,4 +1,4 @@
-import {sendDamage,sendCoin} from './photon_src.js';
+import {setBoardInfo,sendCoin} from './photon_src.js';
 import {arrangeImages} from './arrange.js';
 
 
@@ -10,7 +10,7 @@ export function setOther(){
     const damageSels = document.querySelectorAll('.damageSel');
     damageSels.forEach(damageSel => {
         damageSel.addEventListener('change', function () {
-            sendDamage();
+          setBoardInfo();
         })
     })
 

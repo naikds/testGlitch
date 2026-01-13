@@ -12,8 +12,6 @@ const result = document.getElementById('result');
 const photonButton = document.getElementById('photonButton');
 const aud_info = document.getElementById('aud_info');
 
-let roomJoinFlg = '0';
-
 const client = new Photon.LoadBalancing.LoadBalancingClient(Photon.ConnectionProtocol.Wss, appId, appVersion);
 client.connectOptions = { 
   keepAliveTimeout: 30000, // WebSocketのkeep-aliveタイムアウト（ミリ秒） 
@@ -30,14 +28,17 @@ client.onStateChange = function (state) {
 client.onJoinRoom = function () {
   console.log(`Joined room: ${client.myRoom().name}`);
   result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
-  roomJoinFlg = '1';
-  sendPhotonMessage(5, "roomJoin"); //全体へルーム参加を通知しカード情報の送信を要求する
   if(isPlayer()){
-    sendFirstCardInfo();//カード情報をルーム全体へ送信する
+    //カード情報をルームプロパティへ登録する
+    setCardInfo();
   }else{
     //p1とp2を入れ替えるボタンを表示する
     const p2chbtn = document.getElementById('btnChangePl');
     p2chbtn.style.visibility = '';
+    aud_info.dataset.prno = actors.slice(0, 2).map(a => a.actorNr)[0];
+
+    //ルームに登録されているカード情報を取得する
+    getCardInfo();
   }
 };
 
@@ -48,8 +49,7 @@ client.onCreatedRoom = function () {
 
 // ルームが見つからなかった場合の処理
 client.onJoinRoomFailed = function (errorCode, errorMessage) {
-  const roomName = // Photonサーバへの接続開始
-    console.log(`Room ${roomName} not found. Please create the room.`);
+    console.log(`Room not found. Please create the room.`);
 };
 
 // エラー処理
@@ -85,6 +85,11 @@ client.onRoomListUpdate = function(rooms){
     clone.querySelector('.submenu-item').textContent = room.name;
     inputXmenu_ul.appendChild(clone);
   })
+}
+
+client.onMyRoomPropertiesChange = function () {
+  //プロパティが更新されたらボード情報を更新
+  getBoardInfo();
 }
 
 
@@ -135,15 +140,95 @@ function computeRoles() {
   return { isPlayer, playerActorNrs };
 }
 
+//カード情報をプロパティに登録
+function setCardInfo(){
+  const pr_myNr = 'pr_' + String(client.myActor().actorNr);
+
+  const cards = document.querySelectorAll('img.card');
+
+  const srcList = Array.from(cards).map(img => img.id + "@" + img.src + "@" + getTagName(img));
+  client.myRoom().setCustomProperties({ [pr_myNr]: srcList.join(',')});
+}
+
+function getCardInfo(){
+  const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
+  playerActorNrs.forEach(actno=>{
+    //
+    if(client.myActor().actorNr == actno) return;
+    const _pr = 'pr_' + actno;
+    const aud_prno = aud_info.dataset.prno;
+    let pare_pre = '';
+    if(aud_prno != String(actno)){
+      pare = 'p2_'
+    }
+
+    const cardInfo = client.myRoom().getCustomProperties()[_pr];
+    const imgdata = cardInfo.split(',');
+
+    imgdata.forEach(data=>{
+      const datasrc = data.split('@');
+      const img = document.getElementById(pare_pre + datasrc[0])
+      const pare=document.getElementById(pare_pre + 'deck');
+      img.src = datasrc[1];
+      img.classList.add(datasrc[2]);
+      img.classList.remove('draggable');
+      pare.appendChild(img);
+    })
+  })
+}
+
+export function setBoardInfo(){
+  //カード位置情報
+  const cards = document.querySelectorAll('#container .card');
+  const cards_srcList = Array.from(cards).map(img => img.id.match(/\d+/)[0] + getCardBoxNm(img.closest('.cardBox').id)).join(',');
+
+  //ダメカン情報
+  const damages = document.querySelectorAll('.damageSel');
+  const damages_srcList = Array.from(damages).map(damage => damage.id + "@" + damage.value).join(',');
+
+  //プレイヤー情報
+  const hand = document.getElementById('hand');
+  const deck = document.getElementById('deck');
+  const side = document.getElementById('side');
+  const plInfo_src = `敵　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`;
+
+  const srcAll = {
+    cards:cards_srcList,
+    damages:damages_srcList,
+    plInfo:plInfo_src
+  }
+
+  const bd_myNr = 'bd' +  + String(client.myActor().actorNr);
+  client.myRoom().setCustomProperties({ [bd_myNr]: JSON.stringify(srcAll)});
+}
+
+function getBoardInfo(){
+  const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
+  playerActorNrs.forEach(actno=>{
+    if(client.myActor().actorNr == actno) return;
+    const _bd = 'bd_' + actno;
+    const aud_prno = aud_info.dataset.prno;
+    let pare_pre = '';
+    if(aud_prno != String(actno)){
+      pare = 'p2_'
+    }
+
+    const boardInfo = client.myRoom().getCustomProperties()[_bd];
+    setCardInfo(boardInfo.cards,pare_pre);
+    setDamage(boardInfo.damages,pare_pre);
+    setplayerInfo(boardInfo.plInfo,pare_pre);
+  })
+}
+
 function isPlayer() {
   return computeRoles().isPlayer;
 }
 
 //メッセージ送信
 export function sendPhotonMessage(code, message) {
-  //基本プレイヤーのみ送信、デッキ送信要求（code=5の場合）のみ非プレイヤーでも可
-  if (message && roomJoinFlg === '1' && (isPlayer() || (!isPlayer() && code === 5))) {
-    client.raiseEvent(code, message); // イベントコード1でメッセージ送信
+  //プレイヤーのみ送信可
+  if (message && isPlayer()) {
+    client.raiseEvent(code, message);
   }
 }
 
@@ -152,28 +237,6 @@ client.onEvent = function (code, content, actorNr) {
   console.log(`Received event: ${code} from ${actorNr} with content: ${content}`);
   if (code === 1) { // コード1はメッセージイベントとします
     result.innerHTML = `Message from ${actorNr}: ${content}`;
-  }
-
-  //ルームに人が参加した場合にデッキの内容を送信
-  if (code === 5) {
-    sendFirstCardInfo();
-  }
-
-  if (code === 3) {
-    //カードの内容を反映
-    setFirstCardInfo(content,actorNr);
-  }
-  
-  if(code === 7){
-    setCardInfo(content,actorNr);
-  }
-  
-  if(code === 9){
-    setDamage(content,actorNr);
-  }
-  
-  if(code === 11){
-    setplayerInfo(content,actorNr);
   }
   
   if(code === 13){
@@ -185,53 +248,12 @@ client.onEvent = function (code, content, actorNr) {
   }
 };
 
-function plTxt(actorNo){
-  let plTxt ='p2_';
-  if(!isPlayer()){
-    plTxt = (String(actorNo) === aud_info.dataset.prno)?'':'p2_';
-  }
-  return plTxt;
-}
-
-//最初カードの情報を送信（src込み）
-export function sendFirstCardInfo() {
-  const cards = document.querySelectorAll('img.card');
-  
-  const srcList = Array.from(cards).map(img => img.id + "@" + img.src + "@" + getTagName(img));
-  sendPhotonMessage(3, srcList.join(','));
-}
-
-function setFirstCardInfo(info,actorNo) {
-  const imgdata = info.split(',');
-
-  imgdata.forEach(data=>{
-    const datasrc = data.split('@');
-    const img = document.getElementById(plTxt(actorNo) + datasrc[0])
-    const pare=document.getElementById(plTxt(actorNo) + 'deck');
-    img.src = datasrc[1];
-    img.classList.add(datasrc[2]);
-    img.classList.remove('draggable');
-    pare.appendChild(img);
-  })
-
-  arrangeImages();
-}
-
-//カードの情報を送信
-export function sendCardInfo(){
-  const cards = document.querySelectorAll('#container .card');
-  const srcList = Array.from(cards).map(img => img.id.match(/\d+/)[0] + getCardBoxNm(img.closest('.cardBox').id));
-  
-  sendPhotonMessage(7, srcList.join(''));
-  
-}
-
-function setCardInfo(info,actorNo){
-  const cards = document.querySelectorAll(`.${plTxt(actorNo)}cardBox .${plTxt(actorNo)}card`);
+function setCardInfo(info,pltxt){
+  const cards = document.querySelectorAll(`.${pltxt}cardBox .${pltxt}card`);
   cards.forEach(card=>{
-    document.getElementById(`${plTxt(actorNo)}deck`).appendChild(card);
+    document.getElementById(`${pltxt}deck`).appendChild(card);
   });
-   result.innerHTML = info;
+
   const regex= /(\d+)([a-zA-Z])/g;
   const matches = [];
   let match;
@@ -240,28 +262,19 @@ function setCardInfo(info,actorNo){
     matches.push({num:match[1],let:match[2]});
   }
   matches.forEach(data=>{
-    const p2img = document.getElementById(plTxt(actorNo) + 'card' + data.num);
-    const p2pare=document.getElementById(plTxt(actorNo)+ getCardBoxNm(data.let));
+    const p2img = document.getElementById(pltxt + 'card' + data.num);
+    const p2pare=document.getElementById(pltxt+ getCardBoxNm(data.let));
     p2pare.appendChild(p2img);
   })
-  result.innerHTML = "カード受信";
   arrangeImages();
 }
 
-//ダメージ情報の送信
-export function sendDamage(){
-  const damages = document.querySelectorAll('.damageSel');
-  const srcList = Array.from(damages).map(damage => damage.id + "@" + damage.value);
-
-  sendPhotonMessage(9, srcList.join(','));
-}
-
-function setDamage(info,actorNo){
+function setDamage(info,pltxt){
   const damageData = info.split(',');
   damageData.forEach(data=>{
     const datasrc = data.split('@');
-    const p2damage = document.getElementById(plTxt(actorNo) + datasrc[0]);
-    if(plTxt(actorNo) === ''){
+    const p2damage = document.getElementById(pltxt+ datasrc[0]);
+    if(pltxt=== ''){
       p2damage.value=datasrc[1];
     }else{
       p2damage.textContent = datasrc[1];
@@ -269,17 +282,9 @@ function setDamage(info,actorNo){
   })
 }
 
-//プレイヤー情報の送信
-export function sendplayerInfo(){
-    const hand = document.getElementById('hand');
-    const deck = document.getElementById('deck');
-    const side = document.getElementById('side');
-  sendPhotonMessage(11, `敵　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`);
-}
-
-function setplayerInfo(info,actorNo){
-  let pltxt = (plTxt(actorNo) === '')?'p1':'p2'
-  const p2info = document.getElementById(pltxt+'Info');
+function setplayerInfo(info,pltxt){
+  let _pltxt = (pltxt === '')?'p1':'p2'
+  const p2info = document.getElementById(_pltxt+'Info');
   p2info.textContent = info;
 }
 

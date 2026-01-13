@@ -1,4 +1,4 @@
-import {sendplayerInfo} from './photon_src.js';
+import {setBoardInfo} from './photon_src.js';
 
 // イメージの配置を調整する関数
 export function arrangeImages() {
@@ -177,7 +177,7 @@ function updp1Info() {
     const deck = document.getElementById('deck');
     const side = document.getElementById('side');
     p1info.textContent = `自　手札：${hand.children.length}枚　デッキ：${deck.children.length}枚　サイド：${side.children.length}枚`;
-    sendplayerInfo();
+    setBoardInfo();
 }
 
 let handSc = 0;

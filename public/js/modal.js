@@ -1,5 +1,5 @@
 import {arrangeImages} from './arrange.js';
-import {sendCardInfo} from './photon_src.js';
+import {setBoardInfo} from './photon_src.js';
 import {shufflDeck} from './menuBtn.js';
 
 export function setModal(){
@@ -29,7 +29,7 @@ export function setModal(){
         img.classList.remove('selected');
       });
       arrangeImages();
-      sendCardInfo();
+      setBoardInfo();
     });
   });
   
