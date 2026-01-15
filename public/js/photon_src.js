@@ -232,21 +232,21 @@ export function sendPhotonMessage(code, message) {
   }
 }
 
-// メッセージ受信処理
-client.onEvent = function (code, content, actorNr) {
-  console.log(`Received event: ${code} from ${actorNr} with content: ${content}`);
-  if (code === 1) { // コード1はメッセージイベントとします
-    result.innerHTML = `Message from ${actorNr}: ${content}`;
-  }
+// // メッセージ受信処理
+// client.onEvent = function (code, content, actorNr) {
+//   console.log(`Received event: ${code} from ${actorNr} with content: ${content}`);
+//   if (code === 1) { // コード1はメッセージイベントとします
+//     result.innerHTML = `Message from ${actorNr}: ${content}`;
+//   }
   
-  if(code === 13){
-    setCoin(content);
-  }
+//   if(code === 13){
+//     setCoin(content);
+//   }
   
-  if(code === 15){
-    showCardModal(content);
-  }
-};
+//   if(code === 15){
+//     showCardModal(content);
+//   }
+// };
 
 function setCardInfo(info,pltxt){
   const cards = document.querySelectorAll(`.${pltxt}cardBox .${pltxt}card`);
