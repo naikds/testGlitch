@@ -12,7 +12,7 @@ const result = document.getElementById('result');
 const photonButton = document.getElementById('photonButton');
 const aud_info = document.getElementById('aud_info');
 
-// const client = new Photon.LoadBalancing.LoadBalancingClient(Photon.ConnectionProtocol.Wss, appId, appVersion);
+const client = new Photon.LoadBalancing.LoadBalancingClient(Photon.ConnectionProtocol.Wss, appId, appVersion);
 // client.connectOptions = { 
 //   keepAliveTimeout: 30000, // WebSocketのkeep-aliveタイムアウト（ミリ秒） 
 //   disconnectTimeout: 60000 // サーバーが応答しない場合のタイムアウト（ミリ秒）
