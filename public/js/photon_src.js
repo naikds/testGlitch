@@ -12,85 +12,85 @@ const result = document.getElementById('result');
 const photonButton = document.getElementById('photonButton');
 const aud_info = document.getElementById('aud_info');
 
-//const client = new Photon.LoadBalancing.LoadBalancingClient(Photon.ConnectionProtocol.Wss, appId, appVersion);
-client.connectOptions = { 
-  keepAliveTimeout: 30000, // WebSocketのkeep-aliveタイムアウト（ミリ秒） 
-  disconnectTimeout: 60000 // サーバーが応答しない場合のタイムアウト（ミリ秒）
-}
-// Photonサーバへの接続開始
-client.onStateChange = function (state) {
-  const stateName = getStateName(state);
-  console.log(`Photon state changed to: ${stateName}`);
-  result.innerHTML = `サーバ: ${stateName}`;
-};
+// const client = new Photon.LoadBalancing.LoadBalancingClient(Photon.ConnectionProtocol.Wss, appId, appVersion);
+// client.connectOptions = { 
+//   keepAliveTimeout: 30000, // WebSocketのkeep-aliveタイムアウト（ミリ秒） 
+//   disconnectTimeout: 60000 // サーバーが応答しない場合のタイムアウト（ミリ秒）
+// }
+// // Photonサーバへの接続開始
+// client.onStateChange = function (state) {
+//   const stateName = getStateName(state);
+//   console.log(`Photon state changed to: ${stateName}`);
+//   result.innerHTML = `サーバ: ${stateName}`;
+// };
 
-// ルーム参加成功時の処理
-client.onJoinRoom = function () {
-  console.log(`Joined room: ${client.myRoom().name}`);
-  result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
-  if(isPlayer()){
-    //カード情報をルームプロパティへ登録する
-    setCardSrcInfo();
-  }else{
-    //p1とp2を入れ替えるボタンを表示する
-    const p2chbtn = document.getElementById('btnChangePl');
-    p2chbtn.style.visibility = '';
-    aud_info.dataset.prno = actors.slice(0, 2).map(a => a.actorNr)[0];
+// // ルーム参加成功時の処理
+// client.onJoinRoom = function () {
+//   console.log(`Joined room: ${client.myRoom().name}`);
+//   result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
+//   if(isPlayer()){
+//     //カード情報をルームプロパティへ登録する
+//     setCardSrcInfo();
+//   }else{
+//     //p1とp2を入れ替えるボタンを表示する
+//     const p2chbtn = document.getElementById('btnChangePl');
+//     p2chbtn.style.visibility = '';
+//     aud_info.dataset.prno = actors.slice(0, 2).map(a => a.actorNr)[0];
 
-    //ルームに登録されているカード情報を取得する
-    getCardInfo();
-  }
-};
+//     //ルームに登録されているカード情報を取得する
+//     getCardInfo();
+//   }
+// };
 
-// ルーム作成成功時の処理
-client.onCreatedRoom = function () {
-  console.log(`Created room: ${client.myRoom().name}`);
-};
+// // ルーム作成成功時の処理
+// client.onCreatedRoom = function () {
+//   console.log(`Created room: ${client.myRoom().name}`);
+// };
 
-// ルームが見つからなかった場合の処理
-client.onJoinRoomFailed = function (errorCode, errorMessage) {
-    console.log(`Room not found. Please create the room.`);
-};
+// // ルームが見つからなかった場合の処理
+// client.onJoinRoomFailed = function (errorCode, errorMessage) {
+//     console.log(`Room not found. Please create the room.`);
+// };
 
-// エラー処理
-client.onError = function (errorCode, errorMessage) {
-  console.error(`Photon error: ${errorCode} - ${errorMessage}`);
-};
+// // エラー処理
+// client.onError = function (errorCode, errorMessage) {
+//   console.error(`Photon error: ${errorCode} - ${errorMessage}`);
+// };
 
-//ルーム取得処理
-let roomList;
-client.onRoomList = function(rooms){
-  const inputXmenu_ul = document.getElementById('inputXmenu_ul');
-  inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
-  const listItem = document.getElementById('inputXmenu_temp');
-  if(!rooms){return;}
-  roomList = rooms;
-  rooms.forEach(room => {
-    const clone = listItem.content.cloneNode(true);
-    clone.querySelector('.submenu-item').id = room.name;
-    clone.querySelector('.submenu-item').dataset.xnum = room.name;
-    clone.querySelector('.submenu-item').textContent = room.name;
-    inputXmenu_ul.appendChild(clone);
-  })
-}
-client.onRoomListUpdate = function(rooms){
-  const inputXmenu_ul = document.getElementById('inputXmenu_ul');
-  inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
-  const listItem = document.getElementById('inputXmenu_temp');
-  if(!rooms){return;}
-  rooms.forEach(room => {
-    const clone = listItem.content.cloneNode(true);
-    clone.querySelector('.submenu-item').id = room.name;
-    clone.querySelector('.submenu-item').dataset.xnum = room.name;
-    clone.querySelector('.submenu-item').textContent = room.name;
-    inputXmenu_ul.appendChild(clone);
-  })
-}
+// //ルーム取得処理
+// let roomList;
+// client.onRoomList = function(rooms){
+//   const inputXmenu_ul = document.getElementById('inputXmenu_ul');
+//   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
+//   const listItem = document.getElementById('inputXmenu_temp');
+//   if(!rooms){return;}
+//   roomList = rooms;
+//   rooms.forEach(room => {
+//     const clone = listItem.content.cloneNode(true);
+//     clone.querySelector('.submenu-item').id = room.name;
+//     clone.querySelector('.submenu-item').dataset.xnum = room.name;
+//     clone.querySelector('.submenu-item').textContent = room.name;
+//     inputXmenu_ul.appendChild(clone);
+//   })
+// }
+// client.onRoomListUpdate = function(rooms){
+//   const inputXmenu_ul = document.getElementById('inputXmenu_ul');
+//   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
+//   const listItem = document.getElementById('inputXmenu_temp');
+//   if(!rooms){return;}
+//   rooms.forEach(room => {
+//     const clone = listItem.content.cloneNode(true);
+//     clone.querySelector('.submenu-item').id = room.name;
+//     clone.querySelector('.submenu-item').dataset.xnum = room.name;
+//     clone.querySelector('.submenu-item').textContent = room.name;
+//     inputXmenu_ul.appendChild(clone);
+//   })
+// }
 
-client.onMyRoomPropertiesChange = function () {
-  //プロパティが更新されたらボード情報を更新
-  getBoardInfo();
-}
+// client.onMyRoomPropertiesChange = function () {
+//   //プロパティが更新されたらボード情報を更新
+//   getBoardInfo();
+// }
 
 
 //ルーム作成処理
