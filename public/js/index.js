@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   setModal();
   setOther();
   setMenuBtn();
-  reConnect();
 });
 
 
