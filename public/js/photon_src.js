@@ -131,30 +131,35 @@ export function reConnect(){
 
 function computeRoles() {
   const room = client.myRoom();
-  if (!room || !room.loadBalancingClient.actors) return { isPlayer: false, playerActorNrs: [] };
+  if (!room || !room.loadBalancingClient.actors) return { isPlayer: false, playerActorNrs: [],myNr:0 };
   const actors = Object.values(room.loadBalancingClient.actors); // Photon.LoadBalancing.Actorの配列化
   actors.sort((a, b) => a.actorNr - b.actorNr);
   const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
   const myNr = client.myActor().actorNr;
   const isPlayer = playerActorNrs.includes(myNr);
-  return { isPlayer, playerActorNrs };
+  return { isPlayer, playerActorNrs,myNr };
+}
+
+function setCustomPropertie(PropertieNm,context){
+  if(!isPlayer()) return;
+  client.myRoom().setCustomProperties({[PropertieNm]: context});
 }
 
 //カード情報をプロパティに登録
 function setCardSrcInfo(){
-  const pr_myNr = 'pr_' + String(client.myActor().actorNr);
+  const pr_myNr = 'pr_' + String(computeRoles().myNr);
 
   const cards = document.querySelectorAll('img.card');
 
   const srcList = Array.from(cards).map(img => img.id + "@" + img.src + "@" + getTagName(img));
-  client.myRoom().setCustomProperties({ [pr_myNr]: srcList.join(',')});
+  setCustomPropertie(pr_myNr,srcList.join(','));
 }
 
 function getCardInfo(){
   const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
   playerActorNrs.forEach(actno=>{
     //
-    if(client.myActor().actorNr == actno) return;
+    if(computeRoles().myNr == actno) return;
     const _pr = 'pr_' + actno;
     const aud_prno = aud_info.dataset.prno;
     let pare_pre = '';
@@ -198,14 +203,14 @@ export function setBoardInfo(){
     plInfo:plInfo_src
   }
 
-  const bd_myNr = 'bd' +  + String(client.myActor().actorNr);
-  client.myRoom().setCustomProperties({ [bd_myNr]: JSON.stringify(srcAll)});
+  const bd_myNr = 'bd' +  + String(computeRoles().myNr);
+  setCustomPropertie(bd_myNr,JSON.stringify(srcAll));
 }
 
 function getBoardInfo(){
   const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
   playerActorNrs.forEach(actno=>{
-    if(client.myActor().actorNr == actno) return;
+    if(computeRoles().myNr == actno) return;
     const _bd = 'bd_' + actno;
     const aud_prno = aud_info.dataset.prno;
     let pare_pre = '';
