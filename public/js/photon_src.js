@@ -30,7 +30,7 @@ client.onJoinRoom = function () {
   result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
   if(isPlayer()){
     //カード情報をルームプロパティへ登録する
-    setCardInfo();
+    setCardSrcInfo();
   }else{
     //p1とp2を入れ替えるボタンを表示する
     const p2chbtn = document.getElementById('btnChangePl');
@@ -141,7 +141,7 @@ function computeRoles() {
 }
 
 //カード情報をプロパティに登録
-function setCardInfo(){
+function setCardSrcInfo(){
   const pr_myNr = 'pr_' + String(client.myActor().actorNr);
 
   const cards = document.querySelectorAll('img.card');
