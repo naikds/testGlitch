@@ -108,12 +108,13 @@ export function setCardDrag() {
 
     // dataset 解放
     delete target.dataset.touchId;
-    delete target.dataset.moto;
     delete target.dataset.handIndex;
 
     // 後処理
     arrangeImages();
     setBoardInfo();
+    
+    delete target.dataset.moto;
   }
 
   document.addEventListener('pointerup', (e) => {
