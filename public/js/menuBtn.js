@@ -409,6 +409,7 @@ function showModal(srcId) {
         img.addEventListener('click', (e) => {
             e.target.classList.toggle('selected');
         });
+        img.classList.remove('draggable');
         targetContainer.appendChild(img);
     });
   
@@ -442,6 +443,7 @@ function showModalNum(srcId,num,first) {
       img.addEventListener('click', (e) => {
           e.target.classList.toggle('selected');
       });
+      img.classList.remove('draggable');
       targetContainer.appendChild(img);
     }
     
