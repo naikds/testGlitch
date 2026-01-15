@@ -66,10 +66,14 @@ export function setCardDrag() {
     }
 
     if (!canceled && target.dataset.touchId == e.pointerId) {
+      const noPoints = document.querySelectorAll('.nonMousePointer');
+      noPoints.forEach(p=>{p.classList.remove('nonMousePointer');})
+      
       // ドラッグ中要素は pointer-events: none なので背面の要素を拾える
       const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
       const dropzone = dropTarget ? dropTarget.closest('.dropzone') : null;
 
+      noPoints.forEach(p=>{p.classList.add('nonMousePointer');})
       if (dropzone) {
         // ドロップ先に配置（元コード準拠）
         dropzone.appendChild(target);
