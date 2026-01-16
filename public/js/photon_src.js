@@ -131,7 +131,7 @@ export function reConnect(){
 
 function computeRoles() {
   const room = client.myRoom();
-  if (!room || !room.loadBalancingClient.actors) return { isPlayer: false, playerActorNrs: [],myNr:0 };
+  if (!room || !room.loadBalancingClient.actors) return { isPlayer: false, playerActorNrs: [],myNr:-1 };
   const actors = Object.values(room.loadBalancingClient.actors); // Photon.LoadBalancing.Actorの配列化
   actors.sort((a, b) => a.actorNr - b.actorNr);
   const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
