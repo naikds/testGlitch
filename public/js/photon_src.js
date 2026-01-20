@@ -35,7 +35,7 @@ client.onJoinRoom = function () {
     //p1とp2を入れ替えるボタンを表示する
     const p2chbtn = document.getElementById('btnChangePl');
     p2chbtn.style.visibility = '';
-    aud_info.dataset.prno = actors.slice(0, 2).map(a => a.actorNr)[0];
+    aud_info.dataset.prno = computeRoles().playerActorNrs[0];
 
     //ルームに登録されているカード情報を取得する
     getCardInfo();
@@ -156,7 +156,7 @@ function setCardSrcInfo(){
 }
 
 function getCardInfo(){
-  const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
+  const playerActorNrs = computeRoles().playerActorNrs;
   playerActorNrs.forEach(actno=>{
     //
     if(computeRoles().myNr == actno) return;
@@ -164,7 +164,7 @@ function getCardInfo(){
     const aud_prno = aud_info.dataset.prno;
     let pare_pre = '';
     if(aud_prno != String(actno)){
-      pare = 'p2_'
+      pare_pre = 'p2_'
     }
 
     const cardInfo = client.myRoom().getCustomProperties()[_pr];
@@ -203,22 +203,22 @@ export function setBoardInfo(){
     plInfo:plInfo_src
   }
 
-  const bd_myNr = 'bd' +  + String(computeRoles().myNr);
+  const bd_myNr = 'bd_' + String(computeRoles().myNr);
   setCustomPropertie(bd_myNr,JSON.stringify(srcAll));
 }
 
 function getBoardInfo(){
-  const playerActorNrs = actors.slice(0, 2).map(a => a.actorNr);
+  const playerActorNrs = computeRoles().playerActorNrs;
   playerActorNrs.forEach(actno=>{
     if(computeRoles().myNr == actno) return;
     const _bd = 'bd_' + actno;
     const aud_prno = aud_info.dataset.prno;
     let pare_pre = '';
     if(aud_prno != String(actno)){
-      pare = 'p2_'
+      pare_pre = 'p2_'
     }
 
-    const boardInfo = client.myRoom().getCustomProperties()[_bd];
+    const boardInfo = JSON.parse(client.myRoom().getCustomProperties()[_bd]);
     setCardInfo(boardInfo.cards,pare_pre);
     setDamage(boardInfo.damages,pare_pre);
     setplayerInfo(boardInfo.plInfo,pare_pre);
