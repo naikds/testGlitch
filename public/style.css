@@ -4,6 +4,24 @@ body {
     margin: 0;
 }
 
+/* 1. タップしたときに要素が青く光る現象（タップハイライト）を消す */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. ドラッグや操作時に文字や要素が選択されて青いハイライトになるのを防ぐ */
+body,
+.draggable,
+.card,
+.p2_card,
+.menu,
+.menuBtn,
+.coinImg,
+.btnImg {
+    -webkit-user-select: none; /* Safari用 */
+    user-select: none;         /* 標準 */
+}
+
 .container {
     position: relative;
     width: 100vw;
