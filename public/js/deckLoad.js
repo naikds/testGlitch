@@ -1,5 +1,5 @@
 const LEGEND_STADIUM_MAP = {
-  "伝説の溶岩窟": {
+  "伝説の溶岩洞": {
     leftImage: "images/yogan1.png",
     rightImage: "images/yogan2.png"
   }
