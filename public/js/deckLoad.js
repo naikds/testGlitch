@@ -2,6 +2,14 @@ const LEGEND_STADIUM_MAP = {
   "伝説の溶岩洞": {
     leftImage: "images/yogan1.png",
     rightImage: "images/yogan2.png"
+  },
+  "伝説の海溝": {
+    leftImage: "images/kaiko1.png",
+    rightImage: "images/kaiko2.png"
+  },
+  "伝説の山頂": {
+    leftImage: "images/santyo1.png",
+    rightImage: "images/santyo2.png"
   }
 };
 
