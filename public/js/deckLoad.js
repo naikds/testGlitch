@@ -1,3 +1,9 @@
+const LEGEND_STADIUM_MAP = {
+  "伝説の溶岩窟": {
+    leftImage: "images/yogan1.png",
+    rightImage: "images/yogan2.png"
+  }
+};
 
 export function setDeckLoad(){
   //デッキコードからデッキを読み込む
@@ -33,12 +39,25 @@ export function setDeckLoad(){
       let deckIndex = 0;
       let cnt = 0;
       images.forEach(img => {
-
-        for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
-          deckIndex = deckIndex + 1;
-          document.getElementById('card' + deckIndex).src = img.src//カードのurl
-          document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
-          document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2
+        const legendConfig = LEGEND_STADIUM_MAP[img.alt];
+        if(legendConfig){
+          for(let i = 0; i < Number(imageCnts[cnt].innerHTML); i+=2){
+            deckIndex = deckIndex + 1;
+            document.getElementById('card' + deckIndex).src = legendConfig.leftImage;//カードのurl
+            document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
+            document.getElementById('card' + deckIndex).classList.add('sta');//カードの種類
+            deckIndex = deckIndex + 1;
+            document.getElementById('card' + deckIndex).src = legendConfig.rightImage;//カードのurl
+            document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
+            document.getElementById('card' + deckIndex).classList.add('sta');//カードの種類
+          }
+        }else{
+          for (let i = 0; i < Number(imageCnts[cnt].innerHTML); i++) {
+            deckIndex = deckIndex + 1;
+            document.getElementById('card' + deckIndex).src = img.src//カードのurl
+            document.getElementById('card' + deckIndex).alt = img.alt;//カードの名前
+            document.getElementById('card' + deckIndex).classList.add(cardTags[cnt * 2]);//カードの種類2
+          }
         }
         cnt = cnt + 1;
       });
