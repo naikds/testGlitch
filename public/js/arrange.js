@@ -9,7 +9,7 @@ export function arrangeImages() {
         card.style.top = '';
     })
   //とりあえずバグ対応
-  bagReset()
+  //bagReset()
 
     //手札
     arrangeHand();
