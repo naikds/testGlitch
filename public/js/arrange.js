@@ -8,9 +8,7 @@ export function arrangeImages() {
         card.style.left = '';
         card.style.top = '';
     })
-  //とりあえずバグ対応
-  //bagReset()
-
+    
     //手札
     arrangeHand();
   
@@ -157,8 +155,8 @@ function arrangeStudium(){
   });
 }
 
-//変なところにいるカードを元の位置に戻す
-function bagReset(){
+//containerに残ってる変なカードを元の位置に戻す
+export function resetContainerCards(){
     const container = document.getElementById('container');
     const images = container.querySelectorAll('.container > .card');
   
