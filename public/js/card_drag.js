@@ -1,4 +1,4 @@
-import {arrangeImages,preDataSave} from './arrange.js';
+import {arrangeImages,preDataSave,resetContainerCards} from './arrange.js';
 import {sendCardInfo,sendplayerInfo} from './photon_src.js';
 
 export function setCardDrag(){
@@ -71,6 +71,7 @@ export function setCardDrag(){
       arrangeImages();
       sendCardInfo();
       delete target.dataset.moto;
+      resetContainerCards();
     });
   });
 }
