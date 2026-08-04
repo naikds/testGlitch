@@ -1,5 +1,5 @@
 import {setCardDrag} from './card_drag.js';
-import {setDeckLoad} from './deckLoad.js';
+import {setDeckLoad,restoreDeckData} from './deckLoad.js';
 import {setMenuBtn} from './menuBtn.js';
 import {setModal} from './modal.js';
 import {setOther} from './other.js';
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   setOther();
   setMenuBtn();
   reConnect();
+  restoreDeckData();
 });
 
 
