@@ -121,12 +121,12 @@ export function joinRoom(roomName){
   }
 }
 
-export function reConnect(){
+export async function reConnect(){
   // 1. 切断を要求
   client.disconnect();
   
   // 2. 実際に切断が完了するまでawaitで待つ
-  //await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.Disconnected);
+  await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.Disconnected);
   
   // 3. 切断が終わったら、改めて接続処理を走らせる
   client.connectToRegionMaster(region);
@@ -353,17 +353,10 @@ function getCardBoxNm(id){
 }
 
 
-/**
- * Photonクライアントが指定したステータスに遷移するまで待機する関数
- * @param {Object} client - LoadBalancingClientのインスタンス
- * @param {number} targetState - 待機する目標のステータス
- * @param {number} [timeoutMs=10000] - タイムアウト時間（ミリ秒）
- * @returns {Promise<void>}
- */
 function waitForState(client, targetState, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
-      // 既に目標のステータスに達している場合
-      if (client.state === targetState) {
+      // 既に目標のステータスに達している場合（client.state() メソッドを使用）
+      if (client.state() === targetState) {
           resolve();
           return;
       }
@@ -380,14 +373,14 @@ function waitForState(client, targetState, timeoutMs = 10000) {
       // タイムアウト処理
       timer = setTimeout(() => {
           cleanup();
-          reject(new Error(`Timeout: Failed to reach state ${targetState} within ${timeoutMs}ms. Current state: ${client.state}`));
+          reject(new Error(`Timeout: Failed to reach state ${targetState} within ${timeoutMs}ms. Current state: ${client.state()}`));
       }, timeoutMs);
 
-      // ステータス変更時のコールバックをフック
-      client.onStateChange = (oldState, newState) => {
-          // 元のコールバックが設定されている場合は呼び出す
+      // ステータス変更時のコールバックをフック（引数は1つの newState のみ）
+      client.onStateChange = (newState) => {
+          // 元のコールバックが設定されている場合は呼び出す（thisをclientにバインド）
           if (originalOnStateChange) {
-              originalOnStateChange(oldState, newState);
+              originalOnStateChange.call(client, newState);
           }
 
           if (newState === targetState) {
