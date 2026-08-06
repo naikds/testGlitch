@@ -22,13 +22,13 @@ client.connectOptions = {
 client.onStateChange = function (state) {
   const stateName = getStateName(state);
   console.log(`Photon state changed to: ${stateName}`);
-  result.innerHTML = `サーバ: ${stateName}`;
+  setLog(`サーバ: ${stateName}`);
 };
 
 // ルーム参加成功時の処理
 client.onJoinRoom = function () {
   console.log(`Joined room: ${client.myRoom().name}`);
-  result.innerHTML = `サーバ: ${`Joined room: ${client.myRoom().name}`}`;
+  setLog(`サーバ: ${`Joined room: ${client.myRoom().name}`}`);
   roomJoinFlg = '1';
   sendPhotonMessage(5, "roomJoin");
   sendFirstCardInfo();
@@ -36,13 +36,13 @@ client.onJoinRoom = function () {
 
 // ルーム作成成功時の処理
 client.onCreatedRoom = function () {
-  console.log(`Created room: ${client.myRoom().name}`);
+  setLog(`Created room: ${client.myRoom().name}`);
 };
 
 // ルームが見つからなかった場合の処理
 client.onJoinRoomFailed = function (errorCode, errorMessage) {
   const roomName = 'room';// Photonサーバへの接続開始
-    console.log(`Room ${roomName} not found. Please create the room.`);
+  setLog(`Room ${roomName} not found. Please create the room.`);
 };
 
 // エラー処理
@@ -56,6 +56,7 @@ client.onRoomList = function(rooms){
   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
   const listItem = document.getElementById('inputXmenu_temp');
   if(!rooms){return;}
+  setLog(`ルーム取得処理実行`);
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
     clone.querySelector('.submenu-item').id = room.name;
@@ -69,6 +70,7 @@ client.onRoomListUpdate = function(rooms){
   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
   const listItem = document.getElementById('inputXmenu_temp');
   if(!rooms){return;}
+  setLog(`ルーム一覧更新`);
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
     clone.querySelector('.submenu-item').id = room.name;
@@ -266,6 +268,11 @@ function getStateName(state) {
     }
     return "Unknown";
   }
+
+function setLog(log){
+  result.innerHTML = log;
+}
+
 
 function getTagName(card){
   if(card.classList.contains('pke')){return 'pke';}
