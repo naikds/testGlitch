@@ -215,7 +215,7 @@ function fieldUpAct(item, btnid){
             moveAllCard('hand', 'deck', false);
             shufflDeck();
             moveCard('deck', 'hand', 4, true, false);
-            break;jaji-man
+            break;
         //博士の研究を使う
         case 'ha-kase':
             //手札をトラッシュして山札から7枚引く
