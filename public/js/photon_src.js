@@ -81,21 +81,33 @@ client.onRoomListUpdate = function(rooms){
     inputXmenu_ul.appendChild(clone);
   })
 }
-
-
 //ルーム作成処理
-export function createRoom(roomName){
+// ルーム作成処理（自動採番版）
+export function createRoom(){
   const carddata = document.getElementById('card1').alt;
   if((carddata == 'card')){
-    result.innerHTML = 'デッキを読み込んで下さい';
+    setLog('デッキを読み込んで下さい');
     return;
   }
-  if (roomName) {
-    client.createRoom(roomName, { maxPlayers: 2 });
-    client.joinRoom(roomName);
-  }
-}
 
+  // 現在取得できているルーム一覧を取得
+  const rooms_avali = client.availableRooms();
+  const roomNames = rooms_avali.map(r => r.name);
+
+  // room1, room2, room3... の中でまだ使われていない最小の番号を自動で探す
+  let roomCnt = 1;
+  let roomName = '';
+  while (true) {
+    roomName = `room${roomCnt}`;
+    if (!roomNames.includes(roomName)) {
+      break; // 被っていなければこの名前を採用してループを抜ける
+    }
+    roomCnt++;
+  }
+
+  // 自動生成したルーム名で作成
+  client.createRoom(roomName, { maxPlayers: 2 });
+}
 //ルーム参加処理
 export function joinRoom(roomName){
   const carddata = document.getElementById('card1').alt;

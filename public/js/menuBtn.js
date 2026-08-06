@@ -317,8 +317,7 @@ function photonAct(item,btnid){
             break;
         case 'roomCreate':
             inputmenu.querySelector('[data-action="p2Change"]').style.display ='none';
-            const roomCnt = inputmenu.querySelectorAll('.room').length + 1;
-            createRoom(`room${roomCnt}`);
+            createRoom();
             break;
         case 'deckReLoad':
             const url = 'https://www.pokemon-card.com/deck/deck.html?deckID=' + document.getElementById('urlInput').value;
