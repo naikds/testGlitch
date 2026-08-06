@@ -118,7 +118,18 @@ export async function joinRoom(roomName){
     result.innerHTML = 'デッキを読み込んで下さい';
     return;
   }
+
   if (roomName) {
+    // 現在取得できているルーム一覧を取得
+    const rooms_avali = client.availableRooms();
+    const roomNames = rooms_avali.map(r => r.name);
+
+    // 指定されたルームが存在するか判定
+    if (!roomNames.includes(roomName)) {
+      result.innerHTML = '指定されたルームは存在しません';
+      return;
+    }
+
     await leaveRoomAsync();
     client.connectToRegionMaster(region);
     client.joinRoom(roomName);
