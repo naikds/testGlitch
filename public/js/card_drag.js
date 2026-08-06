@@ -20,7 +20,7 @@ export function setCardDrag(){
       e.target.style.left = `${e.clientX - e.target.offsetWidth / 2 - e.target.offsetParent.offsetLeft + window.scrollX}px`;
       e.target.style.top = `${e.clientY - e.target.offsetHeight / 2 - e.target.offsetParent.offsetTop + window.scrollY}px`;
       e.target.style.zIndex = 1000;
-      event.preventDefault();
+      e.preventDefault();
       isDown = true;
       e.target.setPointerCapture(e.pointerId);
     });
