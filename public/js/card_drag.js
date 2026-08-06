@@ -73,5 +73,46 @@ export function setCardDrag(){
       delete target.dataset.moto;
       resetContainerCards();
     });
+    
+    //ドラッグキャンセル時（エラー対処）
+    draggable.addEventListener('pointercancel', (e) => {
+      const target = e.target
+      document.getElementById(target.dataset.moto).appendChild(target);
+      if (target.dataset.touchId == e.pointerId) {
+        draggables.forEach(c => {c.style.visibility = 'hidden';});
+        const noPoints = document.querySelectorAll('.nonMousePointer');
+        noPoints.forEach(p=>{p.classList.remove('nonMousePointer');})
+        const dropzone = document.elementFromPoint(e.clientX, e.clientY).closest('.dropzone');
+        noPoints.forEach(p=>{p.classList.add('nonMousePointer');})
+        draggables.forEach(c => {c.style.visibility = '';})
+        if (dropzone) {
+          dropzone.appendChild(target);
+          if (dropzone.classList.contains('deck')) {
+            dropzone.prepend(target);
+          }
+
+          if (dropzone.classList.contains('hand')) {
+            const offsetX = target.offsetLeft - dropzone.offsetLeft + dropzone.scrollLeft;
+            let index = Math.floor(offsetX / (target.offsetWidth * handCardWidth)) + 2;
+            if(target.dataset.handIndex < index){
+              index = index - 1;
+            }
+            if (index < dropzone.children.length) {
+              dropzone.insertBefore(target, dropzone.children[index]);
+            }
+          }
+        }
+        target.style.left = '';
+        target.style.top = '';
+      }
+      target.style.position = '';
+      target.style.zIndex = '';
+      delete target.dataset.touchId;
+      arrangeImages();
+      sendCardInfo();
+      delete target.dataset.moto;
+      resetContainerCards();
+    });
+    
   });
 }
