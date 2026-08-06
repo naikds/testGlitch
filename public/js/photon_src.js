@@ -121,12 +121,12 @@ export function joinRoom(roomName){
   }
 }
 
-export async function reConnect(){
+export function reConnect(){
   // 1. 切断を要求
   client.disconnect();
   
   // 2. 実際に切断が完了するまでawaitで待つ
-  await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.Disconnected);
+  //await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.Disconnected);
   
   // 3. 切断が終わったら、改めて接続処理を走らせる
   client.connectToRegionMaster(region);
