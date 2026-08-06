@@ -122,13 +122,15 @@ export function joinRoom(roomName){
 }
 
 export async function reConnect(){
+  // 1. 切断を要求
   client.disconnect();
+  
   // 2. 実際に切断が完了するまでawaitで待つ
-  await waitDisconnect(client);
-  // 3. 切断が終わったら、改めて接続＆ロビー参加などの処理を走らせる
+  await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.Disconnected);
+  
+  // 3. 切断が終わったら、改めて接続処理を走らせる
   client.connectToRegionMaster(region);
 }
-
 
 //メッセージ送信
 export function sendPhotonMessage(code, message) {
@@ -351,27 +353,50 @@ function getCardBoxNm(id){
 }
 
 
-// 完全に切断されるまで待つ非同期関数
-function waitDisconnect(client) {
-  return new Promise((resolve) => {
-    // すでに切断されているなら即座に完了
-    if (client.isDisconnected || client.state === Photon.LoadBalancing.LoadBalancingClient.State.NoConnection) {
-      resolve();
-      return;
-    }
-
-    // 現在のステータス変更ハンドラーを退避
-    const originalOnStateChange = client.onStateChange;
-
-    client.onStateChange = function(state) {
-      if (typeof originalOnStateChange === 'function') {
-        originalOnStateChange(state);
+/**
+ * Photonクライアントが指定したステータスに遷移するまで待機する関数
+ * @param {Object} client - LoadBalancingClientのインスタンス
+ * @param {number} targetState - 待機する目標のステータス
+ * @param {number} [timeoutMs=10000] - タイムアウト時間（ミリ秒）
+ * @returns {Promise<void>}
+ */
+function waitForState(client, targetState, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+      // 既に目標のステータスに達している場合
+      if (client.state === targetState) {
+          resolve();
+          return;
       }
-      // 切断状態（NoConnectionなど）になったらPromiseを解決して元に戻す
-      if (client.state === Photon.LoadBalancing.LoadBalancingClient.State.NoConnection) {
-        client.onStateChange = originalOnStateChange;
-        resolve();
-      }
-    };
+
+      let timer = null;
+      const originalOnStateChange = client.onStateChange;
+
+      const cleanup = () => {
+          if (timer) clearTimeout(timer);
+          // コールバックを元に戻す
+          client.onStateChange = originalOnStateChange;
+      };
+
+      // タイムアウト処理
+      timer = setTimeout(() => {
+          cleanup();
+          reject(new Error(`Timeout: Failed to reach state ${targetState} within ${timeoutMs}ms. Current state: ${client.state}`));
+      }, timeoutMs);
+
+      // ステータス変更時のコールバックをフック
+      client.onStateChange = (oldState, newState) => {
+          // 元のコールバックが設定されている場合は呼び出す
+          if (originalOnStateChange) {
+              originalOnStateChange(oldState, newState);
+          }
+
+          if (newState === targetState) {
+              cleanup();
+              resolve();
+          } else if (newState === Photon.LoadBalancing.LoadBalancingClient.State.Error) {
+              cleanup();
+              reject(new Error("Photon client entered Error state while waiting."));
+          }
+      };
   });
 }
