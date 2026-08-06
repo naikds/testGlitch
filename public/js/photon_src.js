@@ -41,7 +41,7 @@ client.onCreatedRoom = function () {
 
 // ルームが見つからなかった場合の処理
 client.onJoinRoomFailed = function (errorCode, errorMessage) {
-  const roomName = // Photonサーバへの接続開始
+  const roomName = 'room';// Photonサーバへの接続開始
     console.log(`Room ${roomName} not found. Please create the room.`);
 };
 
@@ -74,6 +74,7 @@ client.onRoomListUpdate = function(rooms){
     clone.querySelector('.submenu-item').id = room.name;
     clone.querySelector('.submenu-item').dataset.xnum = room.name;
     clone.querySelector('.submenu-item').textContent = room.name;
+    inputXmenu_ul.appendChild(clone);
   })
 }
 
