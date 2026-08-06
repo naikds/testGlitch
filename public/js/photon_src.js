@@ -83,7 +83,7 @@ client.onRoomListUpdate = function(rooms){
 }
 //ルーム作成処理
 // ルーム作成処理（自動採番版）
-export function createRoom(){
+export async function createRoom(){
   const carddata = document.getElementById('card1').alt;
   if((carddata == 'card')){
     setLog('デッキを読み込んで下さい');
@@ -106,16 +106,18 @@ export function createRoom(){
   }
 
   // 自動生成したルーム名で作成
+  await leaveRoomAsync();
   client.createRoom(roomName, { maxPlayers: 2 });
 }
 //ルーム参加処理
-export function joinRoom(roomName){
+export async function joinRoom(roomName){
   const carddata = document.getElementById('card1').alt;
   if((carddata == 'card')){
     result.innerHTML = 'デッキを読み込んで下さい';
     return;
   }
   if (roomName) {
+    await leaveRoomAsync();
     client.connectToRegionMaster(region);
     client.joinRoom(roomName);
   }
@@ -130,6 +132,33 @@ export async function reConnect(){
   
   // 3. 切断が終わったら、改めて接続処理を走らせる
   client.connectToRegionMaster(region);
+}
+
+/**
+ * ルームから退出して、マスターサーバーへの復帰を待つ関数
+ */
+async function leaveRoomAsync() {
+  // すでにルームに入っていなければ何もしない
+  if (!client.isJoinedToRoom()) {
+    console.log("すでにルームに入っていません");
+    return;
+  }
+
+  // 1. 退出を要求
+  client.leaveRoom();
+  setLog("サーバ: ルームから退出中...");
+
+  try {
+    // 2. ルーム退出後にマスターサーバーに復帰するステートを待つ
+    // （※お使いのPhotonの仕様に合わせて ConnectedToMasterserver や ConnectedToMaster を指定してください）
+    await waitForState(client, Photon.LoadBalancing.LoadBalancingClient.State.ConnectedToMasterserver, 10000);
+    
+    setLog("サーバ: ルームから退出しました");
+    roomJoinFlg = '0';
+  } catch (error) {
+    console.error(error);
+    setLog("サーバ: ルーム退出タイムアウト");
+  }
 }
 
 //メッセージ送信
