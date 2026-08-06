@@ -72,7 +72,9 @@ client.onRoomListUpdate = function(rooms){
   inputXmenu_ul.querySelectorAll('[data-action="XroomJoin"]').forEach(child => child.remove());
   const listItem = document.getElementById('inputXmenu_temp');
   if(!rooms){return;}
-  setLog(`ルーム一覧更新`);
+  const rooms_avali = client.availableRooms();
+  const roomNames = rooms_avali.map(r => r.name).join(', ');
+  setLog(`ルーム一覧: ${roomNames}`);
   rooms.forEach(room => {
     const clone = listItem.content.cloneNode(true);
     clone.querySelector('.submenu-item').id = room.name;
