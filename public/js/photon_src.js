@@ -121,7 +121,11 @@ export function joinRoom(roomName){
   }
 }
 
-export function reConnect(){
+export async function reConnect(){
+  client.disconnect();
+  // 2. 実際に切断が完了するまでawaitで待つ
+  await waitDisconnect(client);
+  // 3. 切断が終わったら、改めて接続＆ロビー参加などの処理を走らせる
   client.connectToRegionMaster(region);
 }
 
@@ -344,4 +348,30 @@ function getCardBoxNm(id){
   if(id == "bench8"){return "o";}
   if(id == "o"){return "bench8";}
   
+}
+
+
+// 完全に切断されるまで待つ非同期関数
+function waitDisconnect(client) {
+  return new Promise((resolve) => {
+    // すでに切断されているなら即座に完了
+    if (client.isDisconnected || client.state === Photon.LoadBalancing.LoadBalancingClient.State.NoConnection) {
+      resolve();
+      return;
+    }
+
+    // 現在のステータス変更ハンドラーを退避
+    const originalOnStateChange = client.onStateChange;
+
+    client.onStateChange = function(state) {
+      if (typeof originalOnStateChange === 'function') {
+        originalOnStateChange(state);
+      }
+      // 切断状態（NoConnectionなど）になったらPromiseを解決して元に戻す
+      if (client.state === Photon.LoadBalancing.LoadBalancingClient.State.NoConnection) {
+        client.onStateChange = originalOnStateChange;
+        resolve();
+      }
+    };
+  });
 }
